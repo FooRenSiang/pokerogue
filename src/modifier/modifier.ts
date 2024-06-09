@@ -1753,7 +1753,7 @@ export class MoneyMultiplierModifier extends PersistentModifier {
   }
 
   apply(args: any[]): boolean {
-    (args[0] as Utils.IntegerHolder).value += Math.floor((args[0] as Utils.IntegerHolder).value * 0.2 * this.getStackCount());
+    (args[0] as Utils.IntegerHolder).value += Math.floor((args[0] as Utils.IntegerHolder).value * 0.5 * this.getStackCount());
 
     return true;
   }
@@ -1778,7 +1778,7 @@ export class DamageMoneyRewardModifier extends PokemonHeldItemModifier {
 
   apply(args: any[]): boolean {
     const scene = (args[0] as Pokemon).scene;
-    const moneyAmount = new Utils.IntegerHolder(Math.floor((args[1] as Utils.IntegerHolder).value * (0.5 * this.getStackCount())));
+    const moneyAmount = new Utils.IntegerHolder(Math.floor((args[1] as Utils.IntegerHolder).value * (1.0 * this.getStackCount())));
     scene.applyModifiers(MoneyMultiplierModifier, true, moneyAmount);
     scene.addMoney(moneyAmount.value);
 
