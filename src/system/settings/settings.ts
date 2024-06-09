@@ -18,6 +18,7 @@ const AUTO_DISABLED = ["Auto", "Disabled"];
  * Types for helping separate settings to different menus
  */
 export enum SettingType {
+  MOD,
   GENERAL,
   DISPLAY,
   AUDIO
@@ -37,6 +38,21 @@ export interface Setting {
  * to be used when trying to find or update Settings
  */
 export const SettingKeys = {
+
+  // Settings for Mod UI
+  Infinite_Pokeballs: "INFINITE_POKEBALLS",
+  Catch_Trainer_Pokemon: "CATCH_TRAINER_POKEMON",
+  Hidden_Ability_Chance: "HIDDEN_ABILITY_CHANCE",
+  Shiny_Chance: "SHINY_CHANCE",
+  Equal_Egg_Move_Chance: "EQUAL_EGG_MOVE_CHANCE",
+  Infinite_Gacha_Vouchers: "INFINITE_GACHA_VOUCHERS",
+  Quick_Egg_Hatch: "QUICK_EGG_HATCH",
+  Egg_Rarity: "EGG_RARITY",
+  New_Starters_From_Eggs: "NEW_STARTERS_FROM_EGGS",
+  Candy_Cost_Multiplier: "CANDY_COST_MULTIPLIER",
+  Regen_Complete_Pokemon: "REGEN_COMPLETE_POKEMON",
+
+  // Settings for Game UI
   Game_Speed: "GAME_SPEED",
   HP_Bar_Speed: "HP_BAR_SPEED",
   EXP_Gains_Speed: "EXP_GAINS_SPEED",
@@ -74,6 +90,87 @@ export const SettingKeys = {
  * All Settings not related to controls
  */
 export const Setting: Array<Setting> = [
+
+  // Setting for Mod UI
+  {
+    key: SettingKeys.Infinite_Pokeballs,
+    label: "Infinite Pokeballs",
+    options: ["On", "Off"],
+    default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Catch_Trainer_Pokemon,
+    label: "Catch Trainer Pokemon",
+    options: ["On", "NoRestrictions", "Off"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Hidden_Ability_Chance,
+    label: "Hidden Ability Chance",
+    options: ["1x", "2x", "4x", "6x", "64x", "256x"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Shiny_Chance,
+    label: "Shiny Chance",
+    options: ["1x", "2x", "4x", "6x", "256x", "2048x"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Equal_Egg_Move_Chance,
+    label: "Equal Egg Move Chance",
+    options: ["On", "Off"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Infinite_Gacha_Vouchers,
+    label: "Infinite Gacha Vouchers",
+    options: ["On", "Off"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Quick_Egg_Hatch,
+    label: "Quick Egg Hatch",
+    options: ["On", "Off"],
+    default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Egg_Rarity,
+    label: "Egg Rarity",
+    options: ["1x", "2x", "3x", "Great", "Ultra", "Master"],
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.New_Starters_From_Eggs,
+    label: "New Starters From Eggs",
+    options: ["25%", "50%", "75%", "100%"],
+    default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Candy_Cost_Multiplier,
+    label: "Candy Cost Multiplier",
+    options: ["1.5x", "1x", "0.5x", "0x"],
+    default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Regen_Complete_Pokemon,
+    label: "Regen Complete Pokemon",
+    options: ["25%", "50%", "75%", "100%"],
+    default: 1,
+    type: SettingType.MOD
+  },
+
+  // Setting for Game UI
   {
     key: SettingKeys.Game_Speed,
     label: "Game Speed",
@@ -329,6 +426,44 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     return false;
   }
   switch (Setting[index].key) {
+
+  // Settings for Mod UI
+  case SettingKeys.Infinite_Pokeballs:
+    scene.mods.infiniteBalls = value == 0 ? true : false;
+    break;
+  case SettingKeys.Catch_Trainer_Pokemon:
+    scene.mods.catchTrainerPokemon = value == 2 ? false : true;
+    scene.mods.catchTrainerPokemonRestrictions = value == 1 ? false : true;
+    break;
+  case SettingKeys.Hidden_Ability_Chance:
+    scene.mods.hiddenAbilityModifier = 1 / parseFloat(Setting[index].options[value].replace("x", ""));
+    break;
+  case SettingKeys.Shiny_Chance:
+    scene.mods.shinyModifier = parseFloat(Setting[index].options[value].replace("x", ""));
+    break;
+  case SettingKeys.Equal_Egg_Move_Chance:
+    scene.mods.equalEggMoves = value == 0 ? true : false;
+    break;
+  case SettingKeys.Infinite_Gacha_Vouchers:
+    scene.mods.infiniteVouchers = value == 0 ? true : false;
+    break;
+  case SettingKeys.Quick_Egg_Hatch:
+    scene.mods.setOverrideEggHatchWaves(value, scene);
+    break;
+  case SettingKeys.Egg_Rarity:
+    scene.mods.overrideEggRarityIndex = value;
+    break;
+  case SettingKeys.New_Starters_From_Eggs:
+    scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].replace("%", "")) / 100;
+    break;
+  case SettingKeys.Candy_Cost_Multiplier:
+    scene.mods.candyCostMultiplier = parseFloat(Setting[index].options[value].replace("x", ""));
+    break;
+  case SettingKeys.Regen_Complete_Pokemon:
+    scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].replace("%", "")) / 100;
+    break;
+
+  // Settings for Game UI
   case SettingKeys.Game_Speed:
     scene.gameSpeed = parseFloat(Setting[index].options[value].replace("x", ""));
     break;

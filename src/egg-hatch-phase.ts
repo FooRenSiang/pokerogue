@@ -149,6 +149,8 @@ export class EggHatchPhase extends Phase {
       this.pokemon = pokemon;
 
       pokemon.loadAssets().then(() => {
+        this.infoContainer.show(this.pokemon, false, 4);
+        return this.scene.mods.fastHatchAnimation(this.scene, pokemon, this.eggMoveIndex, this.eggContainer, this.pokemonSprite, this.pokemonShinySparkle).then(() => this.end());
         this.canSkip = true;
 
         this.scene.time.delayedCall(1000, () => {
@@ -550,9 +552,7 @@ export class EggHatchPhase extends Phase {
           this.scene.gameData.unlockPity[this.egg.tier] = 0;
         }
 
-        const pokemonSpecies = getPokemonSpecies(species);
-
-        ret = this.scene.addPlayerPokemon(pokemonSpecies, 1, undefined, undefined, undefined, false);
+        ret = this.scene.addPlayerPokemon(this.scene.mods.generateWeightedEgg(speciesPool, maxStarterValue, minStarterValue, this.scene), 1, undefined, undefined, undefined, false);
       }
 
       /**
@@ -578,6 +578,8 @@ export class EggHatchPhase extends Phase {
       this.eggMoveIndex = Utils.randSeedInt(baseChance * Math.pow(2, 3 - this.egg.tier))
         ? Utils.randSeedInt(3)
         : 3;
+
+      this.eggMoveIndex = !!this.scene.mods.equalEggMoves? Utils.randSeedInt(4, 0) : this.eggMoveIndex;
 
     }, this.egg.id, EGG_SEED.toString());
 

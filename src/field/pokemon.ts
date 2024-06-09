@@ -114,7 +114,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
       throw `Cannot create a player Pokemon for species '${species.getName(formIndex)}'`;
     }
 
-    const hiddenAbilityChance = new Utils.IntegerHolder(256);
+    const hiddenAbilityChance = new Utils.IntegerHolder(256*this.scene.mods.hiddenAbilityModifier);
     if (!this.hasTrainer()) {
       this.scene.applyModifiers(HiddenAbilityRateBoosterModifier, true, hiddenAbilityChance);
     }
@@ -840,7 +840,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   getLearnableLevelMoves(): Moves[] {
-    return this.getLevelMoves(1, true).map(lm => lm[1]).filter(lm => !this.moveset.filter(m => m.moveId === lm).length).filter((move: Moves, i: integer, array: Moves[]) => array.indexOf(move) === i);
+    return this.scene.mods.getLearnableMoves(this.scene, this.species, this.fusionSpecies, this.moveset, this.getLevelMoves(1, true));
   }
 
   getTypes(includeTeraType = false, forDefend: boolean = false, ignoreOverride?: boolean): Type[] {
@@ -1270,6 +1270,8 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
       shinyThreshold.value = thresholdOverride;
     }
 
+    shinyThreshold.value *= this.scene.mods.shinyModifier;
+
     this.shiny = (E ^ F) < shinyThreshold.value;
     if ((E ^ F) < 32) {
       console.log("REAL SHINY!!");
@@ -1313,7 +1315,7 @@ export default abstract class Pokemon extends Phaser.GameObjects.Container {
   }
 
   generateFusionSpecies(forStarter?: boolean): void {
-    const hiddenAbilityChance = new Utils.IntegerHolder(256);
+    const hiddenAbilityChance = new Utils.IntegerHolder(256*this.scene.mods.hiddenAbilityModifier);
     if (!this.hasTrainer()) {
       this.scene.applyModifiers(HiddenAbilityRateBoosterModifier, true, hiddenAbilityChance);
     }

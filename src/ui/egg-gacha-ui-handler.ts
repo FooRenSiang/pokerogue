@@ -371,7 +371,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
       const tierValueOffset = this.gachaCursor === GachaType.LEGENDARY ? 1 : 0;
       const tiers = new Array(pullCount).fill(null).map(() => {
         const tierValue = Utils.randInt(256);
-        return tierValue >= 52 + tierValueOffset ? EggTier.COMMON : tierValue >= 8 + tierValueOffset ? EggTier.GREAT : tierValue >= 1 + tierValueOffset ? EggTier.ULTRA : EggTier.MASTER;
+        return this.scene.mods.overrideEggRarity(tierValue, tierValueOffset);
       });
       if (pullCount >= 25 && !tiers.filter(t => t >= EggTier.ULTRA).length) {
         tiers[Utils.randInt(tiers.length)] = EggTier.ULTRA;
@@ -413,6 +413,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
             break;
           }
         }
+        egg.hatchWaves = !!this.scene.mods.overrideEggHatchWaves? 1 : egg.hatchWaves;
         eggs.push(egg);
         this.scene.gameData.eggs.push(egg);
         this.scene.gameData.gameStats.eggsPulled++;
@@ -574,7 +575,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
         case Button.ACTION:
           switch (this.cursor) {
           case 0:
-            if (!this.scene.gameData.voucherCounts[VoucherType.REGULAR]) {
+            if (!this.scene.mods.infiniteVouchers && !this.scene.gameData.voucherCounts[VoucherType.REGULAR]) {
               error = true;
               this.showError(i18next.t("egg:notEnoughVouchers"));
             } else if (this.scene.gameData.eggs.length < 99) {
@@ -587,7 +588,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
             }
             break;
           case 2:
-            if (!this.scene.gameData.voucherCounts[VoucherType.PLUS]) {
+            if (!this.scene.mods.infiniteVouchers && !this.scene.gameData.voucherCounts[VoucherType.PLUS]) {
               error = true;
               this.showError(i18next.t("egg:notEnoughVouchers"));
             } else if (this.scene.gameData.eggs.length < 95) {
@@ -601,7 +602,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
             break;
           case 1:
           case 3:
-            if ((this.cursor === 1 && this.scene.gameData.voucherCounts[VoucherType.REGULAR] < 10)
+            if (!this.scene.mods.infiniteVouchers && (this.cursor === 1 && this.scene.gameData.voucherCounts[VoucherType.REGULAR] < 10)
                   || (this.cursor === 3 && !this.scene.gameData.voucherCounts[VoucherType.PREMIUM])) {
               error = true;
               this.showError(i18next.t("egg:notEnoughVouchers"));
@@ -619,7 +620,7 @@ export default class EggGachaUiHandler extends MessageUiHandler {
             }
             break;
           case 4:
-            if (!this.scene.gameData.voucherCounts[VoucherType.GOLDEN]) {
+            if (!this.scene.mods.infiniteVouchers && !this.scene.gameData.voucherCounts[VoucherType.GOLDEN]) {
               error = true;
               this.showError(i18next.t("egg:notEnoughVouchers"));
             } else if (this.scene.gameData.eggs.length < 75) {

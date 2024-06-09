@@ -31,8 +31,9 @@ export class NavigationManager {
       Mode.SETTINGS_AUDIO,
       Mode.SETTINGS_GAMEPAD,
       Mode.SETTINGS_KEYBOARD,
+      Mode.SETTINGS_MOD
     ];
-    this.labels = ["General", "Display", "Audio", "Gamepad", "Keyboard"];
+    this.labels = ["General", "Display", "Audio", "Gamepad", "Keyboard", "Mods"];
   }
 
   public reset() {

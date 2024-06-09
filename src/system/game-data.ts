@@ -295,6 +295,8 @@ export class GameData {
       this.scene.ui.savingIcon.show();
       const data = this.getSystemSaveData();
 
+      this.scene.modData.saveSystem();
+
       const maxIntAttrValue = Math.pow(2, 31);
       const systemData = JSON.stringify(data, (k: any, v: any) => typeof v === "bigint" ? v <= maxIntAttrValue ? Number(v) : v.toString() : v);
 
@@ -329,6 +331,8 @@ export class GameData {
   public loadSystem(): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       console.log("Client Session:", clientSessionId);
+
+      this.scene.modData.loadSystem();
 
       if (bypassLogin && !localStorage.getItem(`data_${loggedInUser.username}`)) {
         return resolve(false);
@@ -1109,6 +1113,8 @@ export class GameData {
 
         const maxIntAttrValue = Math.pow(2, 31);
         const systemData = useCachedSystem ? this.parseSystemData(decrypt(localStorage.getItem(`data_${loggedInUser.username}`), bypassLogin)) : this.getSystemSaveData();
+
+        this.scene.modData.saveSystem();
 
         const request = {
           system: systemData,

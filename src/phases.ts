@@ -1131,7 +1131,11 @@ export class NewBiomeEncounterPhase extends NextEncounterPhase {
     this.scene.arena.trySetWeather(getRandomWeatherType(this.scene.arena), false);
 
     for (const pokemon of this.scene.getParty().filter(p => p.isOnField())) {
-      applyAbAttrs(PostBiomeChangeAbAttr, pokemon, null);
+      applyPostSummonAbAttrs(PostSummonAbAttr, pokemon).then(() => {
+        if (pokemon.scene) {
+          this.scene.mods.updateWeatherText(pokemon.scene);
+        } this.end();
+      });
     }
 
     const enemyField = this.scene.getEnemyField();
@@ -1546,6 +1550,11 @@ export class SwitchSummonPhase extends SummonPhase {
   switchAndSummon() {
     const party = this.player ? this.getParty() : this.scene.getEnemyParty();
     const switchedPokemon = party[this.slotIndex];
+
+    if (this.scene.currentBattle.battleType === BattleType.TRAINER && this.getPokemon().isFainted() && this.doReturn) {
+      return this.end();
+    }
+
     this.lastPokemon = this.getPokemon();
     applyPreSwitchOutAbAttrs(PreSwitchOutAbAttr, this.lastPokemon);
     if (this.batonPass && switchedPokemon) {
@@ -1930,7 +1939,7 @@ export class CommandPhase extends FieldPhase {
           this.scene.ui.showText(null, 0);
           this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
         }, null, true);
-      } else if (this.scene.currentBattle.battleType === BattleType.TRAINER) {
+      } else if (!this.scene.mods.catchTrainerPokemon && this.scene.currentBattle.battleType === BattleType.TRAINER) {
         this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
         this.scene.ui.setMode(Mode.MESSAGE);
         this.scene.ui.showText(i18next.t("battle:noPokeballTrainer"), null, () => {
@@ -1939,10 +1948,25 @@ export class CommandPhase extends FieldPhase {
         }, null, true);
       } else {
         const targets = this.scene.getEnemyField().filter(p => p.isActive(true)).map(p => p.getBattlerIndex());
+        const enemyPokemon = this.scene.getEnemyField().filter(p => p.isActive(true))[0];
         if (targets.length > 1) {
           this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
           this.scene.ui.setMode(Mode.MESSAGE);
           this.scene.ui.showText(i18next.t("battle:noPokeballMulti"), null, () => {
+            this.scene.ui.showText(null, 0);
+            this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
+          }, null, true);
+        } else if (this.scene.currentBattle.battleType === BattleType.TRAINER && this.scene.mods.catchTrainerPokemonRestrictions &&
+          (enemyPokemon.species.subLegendary || enemyPokemon.species.legendary || enemyPokemon.species.mythical || cursor < PokeballType.ROGUE_BALL)) {
+          this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
+          this.scene.ui.setMode(Mode.MESSAGE);
+          let errorMessage: string;
+          if (enemyPokemon.species.subLegendary || enemyPokemon.species.legendary || enemyPokemon.species.mythical) {
+            errorMessage = "You can't catch this Pokémon!";
+          } else {
+            errorMessage = "You need a stronger Pokéball to catch another trainer's Pokémon!";
+          }
+          this.scene.ui.showText(errorMessage, null, () => {
             this.scene.ui.showText(null, 0);
             this.scene.ui.setMode(Mode.COMMAND, this.fieldIndex);
           }, null, true);
@@ -4832,6 +4856,9 @@ export class AttemptCapturePhase extends PokemonPhase {
         this.end();
       };
       const removePokemon = () => {
+        if (this.scene.currentBattle.battleType === BattleType.TRAINER) {
+          return;
+        }
         this.scene.addFaintedEnemyScore(pokemon);
         this.scene.getPlayerField().filter(p => p.isActive(true)).forEach(playerPokemon => playerPokemon.removeTagsBySourceId(pokemon.id));
         pokemon.hp = 0;
@@ -4881,6 +4908,9 @@ export class AttemptCapturePhase extends PokemonPhase {
           promptRelease();
         } else {
           addToParty();
+        }
+        if (this.scene.currentBattle.battleType === BattleType.TRAINER) {
+          pokemon.damage(pokemon.hp, true, true);
         }
       });
     }, 0, true);

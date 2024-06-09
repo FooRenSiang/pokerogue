@@ -71,7 +71,7 @@ export default class BallUiHandler extends UiHandler {
       const commandPhase = this.scene.getCurrentPhase() as CommandPhase;
       success = true;
       if (button === Button.ACTION && this.cursor < pokeballTypeCount) {
-        if (this.scene.pokeballCounts[this.cursor]) {
+        if (this.scene.pokeballCounts[this.cursor] || this.scene.mods.infiniteBalls) {
           if (commandPhase.handleCommand(Command.BALL, this.cursor)) {
             this.scene.ui.setMode(Mode.COMMAND, commandPhase.getFieldIndex());
             this.scene.ui.setMode(Mode.MESSAGE);

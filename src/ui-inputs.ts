@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { SettingsModUiHandler } from "./ui/settings/settings-mod-ui-handler";
 import {Mode} from "./ui/ui";
 import {InputsController} from "./inputs-controller";
 import MessageUiHandler from "./ui/message-ui-handler";
@@ -170,7 +171,7 @@ export class UiInputs {
   }
 
   buttonCycleOption(button: Button): void {
-    const whitelist = [StarterSelectUiHandler, SettingsUiHandler, SettingsDisplayUiHandler, SettingsAudioUiHandler, SettingsGamepadUiHandler, SettingsKeyboardUiHandler];
+    const whitelist = [StarterSelectUiHandler, SettingsUiHandler, SettingsDisplayUiHandler, SettingsAudioUiHandler, SettingsGamepadUiHandler, SettingsKeyboardUiHandler, SettingsModUiHandler];
     const uiHandler = this.scene.ui?.getHandler();
     if (whitelist.some(handler => uiHandler instanceof handler)) {
       this.scene.ui.processInput(button);

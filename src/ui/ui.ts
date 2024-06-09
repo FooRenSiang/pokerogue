@@ -1,4 +1,5 @@
 import {default as BattleScene} from "../battle-scene";
+import { SettingsModUiHandler } from "./settings/settings-mod-ui-handler";
 import UiHandler from "./ui-handler";
 import BattleMessageUiHandler from "./battle-message-ui-handler";
 import CommandUiHandler from "./command-ui-handler";
@@ -71,6 +72,7 @@ export enum Mode {
   GAMEPAD_BINDING,
   SETTINGS_KEYBOARD,
   KEYBOARD_BINDING,
+  SETTINGS_MOD,
   ACHIEVEMENTS,
   GAME_STATS,
   VOUCHERS,
@@ -105,11 +107,11 @@ const noTransitionModes = [
   Mode.MENU_OPTION_SELECT,
   Mode.GAMEPAD_BINDING,
   Mode.KEYBOARD_BINDING,
-  Mode.SETTINGS,
   Mode.SETTINGS_AUDIO,
   Mode.SETTINGS_DISPLAY,
   Mode.SETTINGS_GAMEPAD,
   Mode.SETTINGS_KEYBOARD,
+  Mode.SETTINGS_MOD,
   Mode.ACHIEVEMENTS,
   Mode.GAME_STATS,
   Mode.VOUCHERS,
@@ -166,6 +168,7 @@ export default class UI extends Phaser.GameObjects.Container {
       new GamepadBindingUiHandler(scene),
       new SettingsKeyboardUiHandler(scene),
       new KeyboardBindingUiHandler(scene),
+      new SettingsModUiHandler(scene),
       new AchvsUiHandler(scene),
       new GameStatsUiHandler(scene),
       new VouchersUiHandler(scene),

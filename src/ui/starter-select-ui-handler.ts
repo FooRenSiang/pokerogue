@@ -1265,6 +1265,36 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                 itemArgs: starterColors[this.lastSpecies.speciesId]
               });
             }
+            // Modded Candy Shop
+            options.push({
+              label: "Unlock Egg Moves",
+              handler: () => {
+                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showEggMovesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                return true;
+              }
+            });
+            options.push({
+              label: "Unlock Shinies",
+              handler: () => {
+                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showShiniesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                return true;
+              }
+            });
+            options.push({
+              label: "Unlock Abilities",
+              handler: () => {
+                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showAbilityUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                return true;
+              }
+            });
+            options.push({
+              label: "Improve IVs",
+              handler: () => {
+                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showIVsUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                return true;
+              }
+            });
+
             options.push({
               label: i18next.t("menu:cancel"),
               handler: () => {
