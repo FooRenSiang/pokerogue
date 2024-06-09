@@ -1169,7 +1169,7 @@ export class GameData {
           dataStr = this.convertSystemDataStr(dataStr, true);
           break;
         }
-        const encryptedData = AES.encrypt(dataStr, saveKey);
+        const encryptedData = dataStr;
         const blob = new Blob([ encryptedData.toString() ], {type: "text/json"});
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
@@ -1219,7 +1219,7 @@ export class GameData {
 
         reader.onload = (_ => {
           return e => {
-            let dataStr = AES.decrypt(e.target.result.toString(), saveKey).toString(enc.Utf8);
+            let dataStr = e.target.result.toString();
             let valid = false;
             try {
               switch (dataType) {
