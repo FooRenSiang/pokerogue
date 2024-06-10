@@ -1355,7 +1355,7 @@ const modifierPool: ModifierPool = {
       return party.some(p => !p.getHeldItems().some(i => i instanceof Modifiers.TurnStatusEffectModifier) && (checkedAbilities.some(a => p.hasAbility(a, false, true)) || p.getMoveset(true).some(m => checkedMoves.includes(m.moveId)))) ? 10 : 0;
     }, 10),
     new WeightedModifierType(modifierTypes.REVIVER_SEED, 4),
-    new WeightedModifierType(modifierTypes.CANDY_JAR, 5),
+    new WeightedModifierType(modifierTypes.CANDY_JAR, 6),
     new WeightedModifierType(modifierTypes.ATTACK_TYPE_BOOSTER, 10),
     new WeightedModifierType(modifierTypes.TM_ULTRA, 8),
     new WeightedModifierType(modifierTypes.RARER_CANDY, 4),
@@ -1371,7 +1371,7 @@ const modifierPool: ModifierPool = {
   }),
   [ModifierTier.ROGUE]: [
     new WeightedModifierType(modifierTypes.ROGUE_BALL, 24),
-    new WeightedModifierType(modifierTypes.RELIC_GOLD, 2),
+    new WeightedModifierType(modifierTypes.RELIC_GOLD, 3),
     new WeightedModifierType(modifierTypes.LEFTOVERS, 3),
     new WeightedModifierType(modifierTypes.SHELL_BELL, 3),
     new WeightedModifierType(modifierTypes.BERRY_POUCH, 4),
@@ -1384,7 +1384,7 @@ const modifierPool: ModifierPool = {
     new WeightedModifierType(modifierTypes.FOCUS_BAND, 5),
     new WeightedModifierType(modifierTypes.QUICK_CLAW, 3),
     new WeightedModifierType(modifierTypes.KINGS_ROCK, 3),
-    new WeightedModifierType(modifierTypes.LOCK_CAPSULE, 3),
+    new WeightedModifierType(modifierTypes.LOCK_CAPSULE, 8),
     new WeightedModifierType(modifierTypes.SUPER_EXP_CHARM, 10),
     new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, 18),
     new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
