@@ -271,8 +271,8 @@ export class Mods {
     return new Promise((resolve) => {
       this.revealHatchSprite(scene, pokemon, eggContainer, pokemonSprite, pokemonShinySparkle);
       scene.ui.showText(
-        `${pokemon.name} hatched from the egg!`,
-        null,
+        `A ${pokemon.name} hatched!`,
+        100,
         () => {
           scene.gameData.updateSpeciesDexIvs(pokemon.species.speciesId, pokemon.ivs);
           scene.gameData.setPokemonCaught(pokemon, true, true).then(() => {

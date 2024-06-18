@@ -551,7 +551,8 @@ export class EggHatchPhase extends Phase {
         } else {
           this.scene.gameData.unlockPity[this.egg.tier] = 0;
         }
-
+        
+        const pokemonSpecies = getPokemonSpecies(speciesOverride);
         ret = this.scene.addPlayerPokemon(this.scene.mods.generateWeightedEgg(speciesPool, maxStarterValue, minStarterValue, this.scene), 1, undefined, undefined, undefined, false);
       }
 
