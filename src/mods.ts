@@ -26,6 +26,7 @@ import { WeatherType } from "./data/weather";
 import { TrainerType } from "./data/enums/trainer-type";
 import Trainer, { TrainerVariant } from "./field/trainer";
 import { trainerConfigs } from "./data/trainer-config";
+import { starterSelectUiHandler } from "./locales/en/starter-select-ui-handler";
 
 export class Mods {
 
@@ -51,6 +52,8 @@ export class Mods {
   public candyCostMultiplier: integer;
 
   public regenPokeChance: integer;
+
+  public pokerusPandemic: boolean;
 
   test() {
     return "test";
@@ -773,6 +776,17 @@ export class Mods {
       return "Harsh Sun";
     case WeatherType.STRONG_WINDS:
       return "Strong Winds";
+    }
+  }
+
+  /**
+   * Pandemic Mode
+   */
+  setOverridePokerus(value: integer) {
+    if (value == 0) {
+      this.pokerusPandemic = true;
+    } else {
+      this.pokerusPandemic = false;
     }
   }
 }

@@ -374,7 +374,8 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
       return container;
     });
 
-    this.pokerusCursorObjs = new Array(2000).fill(null).map(() => {
+    var PandemicNum = this.scene.mods.pokerusPandemic? 5e3 : 3
+    this.pokerusCursorObjs = new Array(PandemicNum).fill(null).map(() => {
       const cursorObj = this.scene.add.image(0, 0, "select_cursor_pokerus");
       cursorObj.setVisible(false);
       cursorObj.setOrigin(0, 0);
@@ -667,7 +668,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     date.setUTCHours(0, 0, 0, 0);
 
     this.scene.executeWithSeedOffset(() => {
-      for (let c = 0; c < 2000; c++) {
+      for (let c = 0; c < PandemicNum; c++) {
         let randomSpeciesId: Species;
         let species: PokemonSpecies;
         let pokerusCursor: integer;

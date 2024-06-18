@@ -12,6 +12,7 @@ export enum Setting {
   New_Starters_From_Eggs = "EGG_POOL_OVERRIDE",
   Candy_Cost_Multiplier = "CANDY_COST_MULTIPLIER",
   Regen_Complete_Pokemon = "REGEN_POKEMON",
+  Pandemic_Mode = "PANDEMIC_MODE"
 }
 
 export interface SettingOptions {
@@ -34,6 +35,7 @@ export const settingOptions: SettingOptions = {
   [Setting.New_Starters_From_Eggs]: ["25%", "50%", "75%", "100%"],
   [Setting.Candy_Cost_Multiplier]: ["1.5x", "1x", "0.5x", "0x"],
   [Setting.Regen_Complete_Pokemon]: ["25%", "50%", "75%", "100%"],
+  [Setting.Pandemic_Mode]: ["On", "Off"],
 };
 
 export const settingDefaults: SettingDefaults = {
@@ -48,6 +50,7 @@ export const settingDefaults: SettingDefaults = {
   [Setting.New_Starters_From_Eggs]: 1,
   [Setting.Candy_Cost_Multiplier]: 1,
   [Setting.Regen_Complete_Pokemon]: 1,
+  [Setting.Pandemic_Mode]: 1,
 };
 
 export const reloadSettings: Setting[] = [];
@@ -88,6 +91,8 @@ export function setSetting(scene: BattleScene, setting: Setting, value: integer)
   case Setting.Regen_Complete_Pokemon:
     scene.mods.regenPokeChance = parseFloat(settingOptions[setting][value].replace("%", "")) / 100;
     break;
+  case Setting.Pandemic_Mode:
+    scene.mods.setOverridePokerus(value);
   }
   scene.mods.test();
   return true;
