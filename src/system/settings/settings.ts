@@ -8,7 +8,11 @@ import SettingsUiHandler from "#app/ui/settings/settings-ui-handler";
 import { EaseType } from "#enums/ease-type";
 import { MoneyFormat } from "#enums/money-format";
 import { PlayerGender } from "#enums/player-gender";
+import { initI18n } from "#app/plugins/i18n.js";
 
+if(!i18next.isInitialized){
+  initI18n();
+}
 const VOLUME_OPTIONS: SettingOption[] = new Array(11).fill(null).map((_, i) => i ? {
   value: (i * 10).toString(),
   label: (i * 10).toString(),
@@ -133,9 +137,9 @@ export const Setting: Array<Setting> = [
     key: SettingKeys.Catch_Trainer_Pokemon,
     label: "Catch Trainer Pokemon",
     options: [
-      {value: "On",label: "On"},
-      {value: "NoRestrictions",label: "NoRestrictions"},
-      {value: "Off",label: "Off"},
+      {value: "0",label: "On"},
+      {value: "1",label: "NoRestrictions"},
+      {value: "2",label: "Off"},
     ],
     default: 0,
     type: SettingType.MOD
@@ -193,12 +197,12 @@ export const Setting: Array<Setting> = [
     key: SettingKeys.Egg_Rarity,
     label: "Egg Rarity",
     options: [
-      {value: "1x",label: "1x"},
-      {value: "2x",label: "2x"},
-      {value: "3x",label: "3x"},
-      {value: "Great",label: "Great"},
-      {value: "Ultra",label: "Ultra"},
-      {value: "Master",label: "Master"},
+      {value: "0",label: "1x"},
+      {value: "1",label: "2x"},
+      {value: "2",label: "3x"},
+      {value: "3",label: "Great"},
+      {value: "4",label: "Ultra"},
+      {value: "5",label: "Master"},
     ],
     default: 0,
     type: SettingType.MOD
@@ -707,11 +711,11 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
 
   // Settings for Mod UI
   case SettingKeys.Infinite_Pokeballs:
-    scene.mods.infiniteBalls = value == 0 ? true : false;
+    scene.mods.infiniteBalls = Setting[index].options[value].value == "On" ? true : false;
     break;
   case SettingKeys.Catch_Trainer_Pokemon:
-    scene.mods.catchTrainerPokemon = value == 2 ? false : true;
-    scene.mods.catchTrainerPokemonRestrictions = value == 1 ? false : true;
+    scene.mods.catchTrainerPokemon = parseInt(Setting[index].options[value].value) == 2 ? false : true;
+    scene.mods.catchTrainerPokemonRestrictions = parseInt(Setting[index].options[value].value) == 1 ? false : true;
     break;
   case SettingKeys.Hidden_Ability_Chance:
     scene.mods.hiddenAbilityModifier = 1 / parseFloat(Setting[index].options[value].value.replace("x", ""));
@@ -720,16 +724,16 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.shinyModifier = parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
   case SettingKeys.Equal_Egg_Move_Chance:
-    scene.mods.equalEggMoves = value == 0 ? true : false;
+    scene.mods.equalEggMoves = Setting[index].options[value].value == "On" ? true : false;
     break;
   case SettingKeys.Infinite_Gacha_Vouchers:
-    scene.mods.infiniteVouchers = value == 0 ? true : false;
+    scene.mods.infiniteVouchers = Setting[index].options[value].value == "On" ? true : false;
     break;
   case SettingKeys.Quick_Egg_Hatch:
-    scene.mods.setOverrideEggHatchWaves(value, scene);
+    scene.mods.setOverrideEggHatchWaves(Setting[index].options[value].value == "On"? 0 : 1, scene);
     break;
   case SettingKeys.Egg_Rarity:
-    scene.mods.overrideEggRarityIndex = value;
+    scene.mods.overrideEggRarityIndex = parseInt(Setting[index].options[value].value);
     break;
   case SettingKeys.New_Starters_From_Eggs:
     scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
@@ -741,7 +745,7 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
     break;
   case SettingKeys.Pandemic_Mode:
-    scene.mods.setOverridePokerus(value);
+    scene.mods.setOverridePokerus(Setting[index].options[value].value == "On" ? 0 : 1);
     break;
 
   // Settings for Game UI
