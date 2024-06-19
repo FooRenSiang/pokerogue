@@ -1,15 +1,17 @@
 import * as Utils from "../utils";
-import { Challenges } from "./enums/challenges";
-import i18next from "#app/plugins/i18n.js";
-import { GameData } from "#app/system/game-data.js";
-import PokemonSpecies, { getPokemonSpecies, speciesStarters } from "./pokemon-species";
+import i18next from "i18next";
+import { DexAttrProps, GameData } from "#app/system/game-data.js";
+import PokemonSpecies, { getPokemonSpecies, getPokemonSpeciesForm, speciesStarters } from "./pokemon-species";
 import Pokemon from "#app/field/pokemon.js";
 import { BattleType, FixedBattleConfig } from "#app/battle.js";
-import { TrainerType } from "./enums/trainer-type";
 import Trainer, { TrainerVariant } from "#app/field/trainer.js";
 import { GameMode } from "#app/game-mode.js";
-import { Species } from "./enums/species";
 import { Type } from "./type";
+import { pokemonEvolutions } from "./pokemon-evolutions";
+import { pokemonFormChanges } from "./pokemon-forms";
+import { Challenges } from "#enums/challenges";
+import { Species } from "#enums/species";
+import { TrainerType } from "#enums/trainer-type";
 
 /**
  * An enum for all the challenge types. The parameter entries on these describe the
@@ -267,11 +269,32 @@ export class SingleGenerationChallenge extends Challenge {
       return false;
     }
 
+    /**
+     * We have special code below for victini because it is classed as a generation 4 pokemon in the code
+     * despite being a generation 5 pokemon. This is due to UI constraints, the starter select screen has
+     * no more room for pokemon so victini is put in the gen 4 section instead. This code just overrides the
+     * normal generation check to correctly treat victini as gen 5.
+     */
     switch (challengeType) {
     case ChallengeType.STARTER_CHOICE:
       const species = args[0] as PokemonSpecies;
       const isValidStarter = args[1] as Utils.BooleanHolder;
-      if (species.generation !== this.value) {
+      const amountOfPokemon = args[3] as number;
+      const starterGeneration = species.speciesId === Species.VICTINI ? 5 : species.generation;
+      const generations = [starterGeneration];
+      if (amountOfPokemon > 0) {
+        const speciesToCheck = [species.speciesId];
+        while (speciesToCheck.length) {
+          const checking = speciesToCheck.pop();
+          if (pokemonEvolutions.hasOwnProperty(checking)) {
+            pokemonEvolutions[checking].forEach(e => {
+              speciesToCheck.push(e.speciesId);
+              generations.push(getPokemonSpecies(e.speciesId).generation);
+            });
+          }
+        }
+      }
+      if (!generations.includes(this.value)) {
         isValidStarter.value = false;
         return true;
       }
@@ -279,7 +302,9 @@ export class SingleGenerationChallenge extends Challenge {
     case ChallengeType.POKEMON_IN_BATTLE:
       const pokemon = args[0] as Pokemon;
       const isValidPokemon = args[1] as Utils.BooleanHolder;
-      if (pokemon.isPlayer() && ((pokemon.species.formIndex === 0 ? pokemon.species : getPokemonSpecies(pokemon.species.speciesId)).generation !== this.value || (pokemon.isFusion() && (pokemon.fusionSpecies.formIndex === 0 ? pokemon.fusionSpecies : getPokemonSpecies(pokemon.fusionSpecies.speciesId)).generation !== this.value))) {
+      const baseGeneration = pokemon.species.speciesId === Species.VICTINI ? 5 : getPokemonSpecies(pokemon.species.speciesId).generation;
+      const fusionGeneration = pokemon.isFusion() ? pokemon.fusionSpecies.speciesId === Species.VICTINI ? 5 : getPokemonSpecies(pokemon.fusionSpecies.speciesId).generation : 0;
+      if (pokemon.isPlayer() && (baseGeneration !== this.value || (pokemon.isFusion() && fusionGeneration !== this.value))) {
         isValidPokemon.value = false;
         return true;
       }
@@ -363,7 +388,32 @@ export class SingleTypeChallenge extends Challenge {
     case ChallengeType.STARTER_CHOICE:
       const species = args[0] as PokemonSpecies;
       const isValidStarter = args[1] as Utils.BooleanHolder;
-      if (!species.isOfType(this.value - 1)) {
+      const dexAttr = args[2] as DexAttrProps;
+      const amountOfPokemon = args[3] as number;
+      const speciesForm = getPokemonSpeciesForm(species.speciesId, dexAttr.formIndex);
+      const types = [speciesForm.type1, speciesForm.type2];
+      if (amountOfPokemon > 0) {
+        const speciesToCheck = [species.speciesId];
+        while (speciesToCheck.length) {
+          const checking = speciesToCheck.pop();
+          if (pokemonEvolutions.hasOwnProperty(checking)) {
+            pokemonEvolutions[checking].forEach(e => {
+              speciesToCheck.push(e.speciesId);
+              types.push(getPokemonSpecies(e.speciesId).type1, getPokemonSpecies(e.speciesId).type2);
+            });
+          }
+          if (pokemonFormChanges.hasOwnProperty(checking)) {
+            pokemonFormChanges[checking].forEach(f1 => {
+              getPokemonSpecies(checking).forms.forEach(f2 => {
+                if (f1.formKey === f2.formKey) {
+                  types.push(f2.type1, f2.type2);
+                }
+              });
+            });
+          }
+        }
+      }
+      if (!types.includes(this.value - 1)) {
         isValidStarter.value = false;
         return true;
       }
@@ -526,7 +576,7 @@ export class LowerStarterPointsChallenge extends Challenge {
 
 /**
  * Apply all challenges of a given challenge type.
- * @param {BattleScene} scene The current scene
+ * @param {GameMode} gameMode The current game mode
  * @param {ChallengeType} challengeType What challenge type to apply
  * @param {any[]} args Any args for that challenge type
  * @returns {boolean} True if any challenge was successfully applied.

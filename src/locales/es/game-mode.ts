@@ -1,4 +1,4 @@
-import { SimpleTranslationEntries } from "#app/plugins/i18n";
+import { SimpleTranslationEntries } from "#app/interfaces/locales";
 
 export const gameMode: SimpleTranslationEntries = {
   "classic": "Clásica",
@@ -6,5 +6,5 @@ export const gameMode: SimpleTranslationEntries = {
   "endlessSpliced": "Infinita (Fusión)",
   "dailyRun": "Diaria",
   "unknown": "Desconicido",
-  "challenge": "Challenge",
+  "challenge": "Desafío",
 } as const;
