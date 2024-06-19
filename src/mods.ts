@@ -2,7 +2,7 @@ import BattleScene, { starterColors } from "./battle-scene";
 import { Stat, getStatName as getDataStatName } from "./data/pokemon-stat";
 import { allAbilities } from "./data/ability";
 import { speciesEggMoves } from "./data/egg-moves";
-import { Moves } from "./data/enums/moves";
+import { Moves } from "./enums/moves";
 import { allMoves } from "./data/move";
 import { pokemonEvolutions } from "./data/pokemon-evolutions";
 import { LevelMoves } from "./data/pokemon-level-moves";
@@ -10,20 +10,20 @@ import PokemonSpecies, { PokemonSpeciesForm, getPokemonSpecies, getPokemonSpecie
 import { Type } from "./data/type";
 import * as Types from "./data/type";
 import { Button } from "./enums/buttons";
-import { PokemonMove } from "./field/pokemon";
+import { PlayerPokemon, PokemonMove } from "./field/pokemon";
 import { GameModes } from "./game-mode";
-import i18next from "./plugins/i18n";
+import i18next from "i18next";
 import { achvs } from "./system/achv";
 import { AbilityAttr, DexAttr, GameData } from "./system/game-data";
 import StarterSelectUiHandler from "./ui/starter-select-ui-handler";
 import UI, { Mode } from "./ui/ui";
 import * as Utils from "./utils";
-import { EggTier } from "./data/enums/egg-type";
-import { Species } from "./data/enums/species";
+import { EggTier } from "./enums/egg-type";
+import { Species } from "./enums/species";
 import { pokemonFormChanges } from "./data/pokemon-forms";
 import { TextStyle, addTextObject } from "./ui/text";
 import { WeatherType } from "./data/weather";
-import { TrainerType } from "./data/enums/trainer-type";
+import { TrainerType } from "./enums/trainer-type";
 import Trainer, { TrainerVariant } from "./field/trainer";
 import { trainerConfigs } from "./data/trainer-config";
 import { starterSelectUiHandler } from "./locales/en/starter-select-ui-handler";
@@ -364,7 +364,7 @@ export class Mods {
     lastSpecies: PokemonSpecies,
     candyCount: any,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text
+    pokemonCandyCountText: Phaser.GameObjects.Text
   ) {
     const options = [];
 
@@ -402,7 +402,7 @@ export class Mods {
     ui: UI,
     lastSpecies: PokemonSpecies,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text,
+    pokemonCandyCountText: Phaser.GameObjects.Text,
     index: integer
   ) {
     scene.gameData.setEggMoveUnlocked(lastSpecies, index);
@@ -440,7 +440,7 @@ export class Mods {
     lastSpecies: PokemonSpecies,
     candyCount: any,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text
+    pokemonCandyCountText: Phaser.GameObjects.Text
   ) {
     const options = [];
 
@@ -478,7 +478,7 @@ export class Mods {
     ui: UI,
     lastSpecies: PokemonSpecies,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text,
+    pokemonCandyCountText: Phaser.GameObjects.Text,
     rarity: integer
   ) {
     while (rarity > 0) {
@@ -535,7 +535,7 @@ export class Mods {
     lastSpecies: PokemonSpecies,
     candyCount: any,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text
+    pokemonCandyCountText: Phaser.GameObjects.Text
   ) {
     const options = [];
     const abilityAttr = scene.gameData.starterData[lastSpecies.speciesId].abilityAttr;
@@ -591,7 +591,7 @@ export class Mods {
     ui: UI,
     lastSpecies: PokemonSpecies,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text,
+    pokemonCandyCountText: Phaser.GameObjects.Text,
     selectedAttr: number
   ) {
     scene.gameData.starterData[lastSpecies.speciesId].abilityAttr = scene.gameData.starterData[lastSpecies.speciesId].abilityAttr | selectedAttr;
@@ -633,7 +633,7 @@ export class Mods {
     lastSpecies: PokemonSpecies,
     candyCount: any,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text
+    pokemonCandyCountText: Phaser.GameObjects.Text
   ) {
     const options = [];
 
@@ -670,7 +670,7 @@ export class Mods {
     ui: BattleScene["ui"],
     lastSpecies: PokemonSpecies,
     uiHandler: StarterSelectUiHandler,
-    pokemonCandyCountText: Phaser.GameObject.Text,
+    pokemonCandyCountText: Phaser.GameObjects.Text,
     stat: number
   ) {
     const IVs = scene.gameData.dexData[lastSpecies.speciesId].ivs;
@@ -743,7 +743,7 @@ export class Mods {
     if (scene.arena) {
       const weatherType = scene.arena.weather?.weatherType;
       let turnsLeft = scene.arena.weather?.turnsLeft;
-      turnsLeft = turnsLeft > 0 ? turnsLeft : "";
+      turnsLeft = turnsLeft > 0 ? turnsLeft : null;
       scene.weatherText.setText(`${this.getWeatherName(weatherType)} ${turnsLeft}`);
       if (weatherType == undefined) {
         scene.weatherText.setText("Clear");

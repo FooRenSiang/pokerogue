@@ -1,6 +1,6 @@
 import { loggedInUser } from "./account";
 import BattleScene from "./battle-scene";
-import { Species } from "./data/enums/species";
+import { Species } from "./enums/species";
 import PokemonSpecies, {
   getPokemonSpecies,
   speciesStarters,

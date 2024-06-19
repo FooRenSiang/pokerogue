@@ -125,84 +125,124 @@ export const Setting: Array<Setting> = [
   {
     key: SettingKeys.Infinite_Pokeballs,
     label: "Infinite Pokeballs",
-    options: ["On", "Off"],
+    options: OFF_ON,
     default: 1,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Catch_Trainer_Pokemon,
     label: "Catch Trainer Pokemon",
-    options: ["On", "NoRestrictions", "Off"],
+    options: [
+      {value: "On",label: "On"},
+      {value: "NoRestrictions",label: "NoRestrictions"},
+      {value: "Off",label: "Off"},
+    ],
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Hidden_Ability_Chance,
     label: "Hidden Ability Chance",
-    options: ["1x", "2x", "4x", "6x", "64x", "256x"],
+    options: [
+      {value: "1x",label: "1x"},
+      {value: "2x",label: "2x"},
+      {value: "4x",label: "4x"},
+      {value: "6x",label: "6x"},
+      {value: "64x",label: "64x"},
+      {value: "256x",label: "256x"},
+    ],
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Shiny_Chance,
     label: "Shiny Chance",
-    options: ["1x", "2x", "4x", "6x", "256x", "2048x"],
+    options: [
+      {value: "1x",label: "1x"},
+      {value: "2x",label: "2x"},
+      {value: "4x",label: "4x"},
+      {value: "6x",label: "6x"},
+      {value: "256x",label: "256x"},
+      {value: "2048x",label: "2048x"},
+    ],
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Equal_Egg_Move_Chance,
     label: "Equal Egg Move Chance",
-    options: ["On", "Off"],
+    options: OFF_ON,
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Infinite_Gacha_Vouchers,
     label: "Infinite Gacha Vouchers",
-    options: ["On", "Off"],
+    options: OFF_ON,
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Quick_Egg_Hatch,
     label: "Quick Egg Hatch",
-    options: ["On", "Off"],
+    options: OFF_ON,
     default: 1,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Egg_Rarity,
     label: "Egg Rarity",
-    options: ["1x", "2x", "3x", "Great", "Ultra", "Master"],
+    options: [
+      {value: "1x",label: "1x"},
+      {value: "2x",label: "2x"},
+      {value: "3x",label: "3x"},
+      {value: "Great",label: "Great"},
+      {value: "Ultra",label: "Ultra"},
+      {value: "Master",label: "Master"},
+    ],
     default: 0,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.New_Starters_From_Eggs,
     label: "New Starters From Eggs",
-    options: ["25%", "50%", "75%", "100%"],
+    options: [
+      {value: "25%",label: "25%"},
+      {value: "50%",label: "50%"},
+      {value: "75%",label: "75%"},
+      {value: "100%",label: "100%"},
+    ],
     default: 1,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Candy_Cost_Multiplier,
     label: "Candy Cost Multiplier",
-    options: ["1.5x", "1x", "0.5x", "0x"],
+    options: [
+      {value: "1.5x",label: "1.5x"},
+      {value: "1x",label: "1x"},
+      {value: "0.5x",label: "0.5x"},
+      {value: "0x",label: "0x"},
+    ],
     default: 1,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Regen_Complete_Pokemon,
     label: "Regen Complete Pokemon",
-    options: ["25%", "50%", "75%", "100%"],
+    options: [
+      {value: "25%",label: "25%"},
+      {value: "50%",label: "50%"},
+      {value: "75%",label: "75%"},
+      {value: "100%",label: "100%"},
+    ],
     default: 1,
     type: SettingType.MOD
   },
   {
     key: SettingKeys.Pandemic_Mode,
     label: "Cause Pandemic",
-    options: ["On", "Off"],
+    options: OFF_ON,
     default: 1,
     type: SettingType.MOD,
     requireReload: true
@@ -674,10 +714,10 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.catchTrainerPokemonRestrictions = value == 1 ? false : true;
     break;
   case SettingKeys.Hidden_Ability_Chance:
-    scene.mods.hiddenAbilityModifier = 1 / parseFloat(Setting[index].options[value].replace("x", ""));
+    scene.mods.hiddenAbilityModifier = 1 / parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
   case SettingKeys.Shiny_Chance:
-    scene.mods.shinyModifier = parseFloat(Setting[index].options[value].replace("x", ""));
+    scene.mods.shinyModifier = parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
   case SettingKeys.Equal_Egg_Move_Chance:
     scene.mods.equalEggMoves = value == 0 ? true : false;
@@ -692,13 +732,13 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.overrideEggRarityIndex = value;
     break;
   case SettingKeys.New_Starters_From_Eggs:
-    scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].replace("%", "")) / 100;
+    scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
     break;
   case SettingKeys.Candy_Cost_Multiplier:
-    scene.mods.candyCostMultiplier = parseFloat(Setting[index].options[value].replace("x", ""));
+    scene.mods.candyCostMultiplier = parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
   case SettingKeys.Regen_Complete_Pokemon:
-    scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].replace("%", "")) / 100;
+    scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
     break;
   case SettingKeys.Pandemic_Mode:
     scene.mods.setOverridePokerus(value);
