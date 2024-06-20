@@ -31,6 +31,8 @@ import { starterSelectUiHandler } from "./locales/en/starter-select-ui-handler";
 export class Mods {
 
   //SETTINGS
+  public startinglevel: integer;
+
   public infiniteBalls: boolean;
 
   public hiddenAbilityModifier: integer;

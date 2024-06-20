@@ -9,6 +9,7 @@ import { EaseType } from "#enums/ease-type";
 import { MoneyFormat } from "#enums/money-format";
 import { PlayerGender } from "#enums/player-gender";
 import { initI18n } from "#app/plugins/i18n.js";
+import { STARTING_LEVEL_OVERRIDE } from "#app/overrides.js";
 
 if(!i18next.isInitialized){
   initI18n();
@@ -72,6 +73,7 @@ export interface Setting {
 export const SettingKeys = {
 
   // Settings for Mod UI
+  Starting_Level: "STARTING_LEVEL",
   Infinite_Pokeballs: "INFINITE_POKEBALLS",
   Catch_Trainer_Pokemon: "CATCH_TRAINER_POKEMON",
   Hidden_Ability_Chance: "HIDDEN_ABILITY_CHANCE",
@@ -126,6 +128,18 @@ export const SettingKeys = {
 export const Setting: Array<Setting> = [
 
   // Setting for Mod UI
+  {
+    key: SettingKeys.Starting_Level,
+    label: "Starting Level",
+    options: [
+      {value: "0",label: "1"},
+      {value: "5",label: "5"},
+      {value: "10",label: "10"},
+      {value: "20",label: "20"},
+    ],
+    default: 1,
+    type: SettingType.MOD
+  },
   {
     key: SettingKeys.Infinite_Pokeballs,
     label: "Infinite Pokeballs",
@@ -710,6 +724,9 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
   switch (Setting[index].key) {
 
   // Settings for Mod UI
+  case SettingKeys.Starting_Level:
+    scene.mods.startinglevel = parseInt(Setting[index].options[value].value);
+    break;
   case SettingKeys.Infinite_Pokeballs:
     scene.mods.infiniteBalls = value == 1 ? true : false;
     break;
