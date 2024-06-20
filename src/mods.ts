@@ -212,7 +212,7 @@ export class Mods {
    * 1 Wave egg hatch
    */
   setOverrideEggHatchWaves(value: integer, scene: BattleScene) {
-    if (value == 0) {
+    if (value == 1) {
       this.overrideEggHatchWaves = true;
       if (scene instanceof BattleScene && scene.gameData != undefined) {
         scene.gameData.eggs.forEach((egg) => {
@@ -783,7 +783,7 @@ export class Mods {
    * Pandemic Mode
    */
   setOverridePokerus(value: integer) {
-    if (value == 0) {
+    if (value == 1) {
       this.pokerusPandemic = true;
     } else {
       this.pokerusPandemic = false;

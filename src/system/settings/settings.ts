@@ -247,7 +247,7 @@ export const Setting: Array<Setting> = [
     key: SettingKeys.Pandemic_Mode,
     label: "Cause Pandemic",
     options: OFF_ON,
-    default: 1,
+    default: 0,
     type: SettingType.MOD,
     requireReload: true
   },
@@ -711,11 +711,11 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
 
   // Settings for Mod UI
   case SettingKeys.Infinite_Pokeballs:
-    scene.mods.infiniteBalls = Setting[index].options[value].value == "On" ? true : false;
+    scene.mods.infiniteBalls = value == 1 ? true : false;
     break;
   case SettingKeys.Catch_Trainer_Pokemon:
-    scene.mods.catchTrainerPokemon = parseInt(Setting[index].options[value].value) == 2 ? false : true;
-    scene.mods.catchTrainerPokemonRestrictions = parseInt(Setting[index].options[value].value) == 1 ? false : true;
+    scene.mods.catchTrainerPokemon = value == 2 ? false : true;
+    scene.mods.catchTrainerPokemonRestrictions = value == 1 ? false : true;
     break;
   case SettingKeys.Hidden_Ability_Chance:
     scene.mods.hiddenAbilityModifier = 1 / parseFloat(Setting[index].options[value].value.replace("x", ""));
@@ -724,16 +724,16 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.shinyModifier = parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
   case SettingKeys.Equal_Egg_Move_Chance:
-    scene.mods.equalEggMoves = Setting[index].options[value].value == "On" ? true : false;
+    scene.mods.equalEggMoves = value == 1 ? true : false;
     break;
   case SettingKeys.Infinite_Gacha_Vouchers:
-    scene.mods.infiniteVouchers = Setting[index].options[value].value == "On" ? true : false;
+    scene.mods.infiniteVouchers = value == 1 ? true : false;
     break;
   case SettingKeys.Quick_Egg_Hatch:
-    scene.mods.setOverrideEggHatchWaves(Setting[index].options[value].value == "On"? 0 : 1, scene);
+    scene.mods.setOverrideEggHatchWaves(value, scene);
     break;
   case SettingKeys.Egg_Rarity:
-    scene.mods.overrideEggRarityIndex = parseInt(Setting[index].options[value].value);
+    scene.mods.overrideEggRarityIndex = value;
     break;
   case SettingKeys.New_Starters_From_Eggs:
     scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
@@ -745,7 +745,7 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
     break;
   case SettingKeys.Pandemic_Mode:
-    scene.mods.setOverridePokerus(Setting[index].options[value].value == "On" ? 0 : 1);
+    scene.mods.setOverridePokerus(value);
     break;
 
   // Settings for Game UI
