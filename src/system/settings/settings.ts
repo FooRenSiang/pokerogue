@@ -85,6 +85,7 @@ export const SettingKeys = {
   New_Starters_From_Eggs: "NEW_STARTERS_FROM_EGGS",
   Candy_Cost_Multiplier: "CANDY_COST_MULTIPLIER",
   Regen_Complete_Pokemon: "REGEN_COMPLETE_POKEMON",
+  Unlimited_Starter_Points: "UNLIMITED_STARTER_POINTS",
   Pandemic_Mode: "PANDEMIC_MODE",
 
   // Settings for Game UI
@@ -255,6 +256,13 @@ export const Setting: Array<Setting> = [
       {value: "100%",label: "100%"},
     ],
     default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Unlimited_Starter_Points,
+    label: "Unlimited Starter Points",
+    options: OFF_ON,
+    default: 0,
     type: SettingType.MOD
   },
   {
@@ -760,6 +768,9 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     break;
   case SettingKeys.Regen_Complete_Pokemon:
     scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
+    break;
+  case SettingKeys.Unlimited_Starter_Points:
+    scene.mods.unlimitedstarterpts = value == 1 ? true : false;
     break;
   case SettingKeys.Pandemic_Mode:
     scene.mods.setOverridePokerus(value);

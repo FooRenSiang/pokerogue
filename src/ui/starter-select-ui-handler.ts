@@ -1738,7 +1738,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     }
 
     Challenge.applyChallenges(this.scene.gameMode, Challenge.ChallengeType.STARTER_POINTS, valueLimit);
-
+    if(this.scene.mods.unlimitedstarterpts) valueLimit.value = 60;
     return valueLimit.value;
   }
 

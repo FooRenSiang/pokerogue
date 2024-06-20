@@ -55,6 +55,8 @@ export class Mods {
 
   public regenPokeChance: integer;
 
+  public unlimitedstarterpts: boolean;
+
   public pokerusPandemic: boolean;
 
   test() {
