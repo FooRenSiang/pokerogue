@@ -169,7 +169,7 @@ export const Setting: Array<Setting> = [
       {value: "256x",label: "256x"},
       {value: "2048x",label: "2048x"},
     ],
-    default: 0,
+    default: 5,
     type: SettingType.MOD
   },
   {
@@ -204,7 +204,7 @@ export const Setting: Array<Setting> = [
       {value: "4",label: "Ultra"},
       {value: "5",label: "Master"},
     ],
-    default: 0,
+    default: 2,
     type: SettingType.MOD
   },
   {

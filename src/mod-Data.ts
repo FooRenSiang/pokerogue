@@ -49,7 +49,7 @@ export class ModData {
   constructor(scene: BattleScene) {
     this.scene = scene;
     this.starterData = {};
-    this.loadSettings();
+    //this.loadSettings();
     this.initStarterData();
   }
 
