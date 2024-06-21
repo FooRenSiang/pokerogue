@@ -27,6 +27,7 @@ import { TrainerType } from "./enums/trainer-type";
 import Trainer, { TrainerVariant } from "./field/trainer";
 import { trainerConfigs } from "./data/trainer-config";
 import { starterSelectUiHandler } from "./locales/en/starter-select-ui-handler";
+import { Scene } from "phaser";
 
 export class Mods {
 
@@ -34,6 +35,8 @@ export class Mods {
   public startinglevel: integer;
 
   public freereroll: integer;
+
+  public maxluck: integer
 
   public infiniteBalls: boolean;
 
