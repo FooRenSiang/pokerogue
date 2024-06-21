@@ -33,6 +33,8 @@ export class Mods {
   //SETTINGS
   public startinglevel: integer;
 
+  public freereroll: integer;
+
   public infiniteBalls: boolean;
 
   public hiddenAbilityModifier: integer;
