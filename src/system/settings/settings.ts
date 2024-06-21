@@ -75,6 +75,7 @@ export const SettingKeys = {
   // Settings for Mod UI
   Starting_Level: "STARTING_LEVEL",
   Free_Reroll: "FREE_REROLL",
+  Always_Catch: "ALWAYS_CATCH",
   Max_Luck: "MAX_LUCK",
   Infinite_Pokeballs: "INFINITE_POKEBALLS",
   Catch_Trainer_Pokemon: "CATCH_TRAINER_POKEMON",
@@ -146,6 +147,13 @@ export const Setting: Array<Setting> = [
   {
     key: SettingKeys.Free_Reroll,
     label: "Free Reroll",
+    options: OFF_ON,
+    default: 0,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Always_Catch,
+    label: "Always Catch",
     options: OFF_ON,
     default: 0,
     type: SettingType.MOD
@@ -753,6 +761,9 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     break;
   case SettingKeys.Free_Reroll:
     scene.mods.freereroll = value == 1 ? 0 : 1;
+    break;
+  case SettingKeys.Always_Catch:
+    scene.mods.alwayscatch = value;
     break;
   case SettingKeys.Max_Luck:
     scene.mods.maxluck = value;

@@ -36,6 +36,8 @@ export class Mods {
 
   public freereroll: integer;
 
+  public alwayscatch: integer;
+
   public maxluck: integer
 
   public infiniteBalls: boolean;
