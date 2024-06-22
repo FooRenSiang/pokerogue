@@ -1411,7 +1411,7 @@ const modifierPool: ModifierPool = {
     new WeightedModifierType(modifierTypes.FOCUS_BAND, 5),
     new WeightedModifierType(modifierTypes.QUICK_CLAW, 3),
     new WeightedModifierType(modifierTypes.KINGS_ROCK, 3),
-    new WeightedModifierType(modifierTypes.LOCK_CAPSULE, 8),
+    new WeightedModifierType(modifierTypes.LOCK_CAPSULE, 15),
     new WeightedModifierType(modifierTypes.SUPER_EXP_CHARM, 10),
     new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : 18),
     new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
