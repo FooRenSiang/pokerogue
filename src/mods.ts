@@ -242,11 +242,11 @@ export class Mods {
    */
   overrideEggRarity(tierValue: integer, tierValueOffset: 0 | 1): EggTier {
     switch (this.overrideEggRarityIndex) {
-    case 3:
+    case 98:
       return EggTier.GREAT;
-    case 4:
+    case 99:
       return EggTier.ULTRA;
-    case 5:
+    case 100:
       return EggTier.MASTER;
     default:
       return tierValue >= (52 + tierValueOffset) * (this.overrideEggRarityIndex + 1)
@@ -518,7 +518,7 @@ export class Mods {
 
     const baseCost = 50 - 5 * (basePokemonValue - 1);
 
-    return Math.round(baseCost * ((1 + rarity) / 2)) * this.candyCostMultiplier;
+    return Math.ceil(Math.round(baseCost * ((1 + rarity) / 2)) * this.candyCostMultiplier);
   }
   protected getShinyRarity(rarity: integer): bigint {
     if (rarity == 3) {

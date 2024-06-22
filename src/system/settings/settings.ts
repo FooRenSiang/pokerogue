@@ -238,11 +238,11 @@ export const Setting: Array<Setting> = [
     label: "Egg Rarity",
     options: [
       {value: "0",label: "1x"},
-      {value: "1",label: "2x"},
       {value: "2",label: "3x"},
-      {value: "3",label: "Great"},
-      {value: "4",label: "Ultra"},
-      {value: "5",label: "Master"},
+      {value: "3",label: "4x"},
+      {value: "98",label: "Great"},
+      {value: "99",label: "Ultra"},
+      {value: "100",label: "Master"},
     ],
     default: 2,
     type: SettingType.MOD
@@ -276,6 +276,7 @@ export const Setting: Array<Setting> = [
       {value: "1.5x",label: "1.5x"},
       {value: "1x",label: "1x"},
       {value: "0.5x",label: "0.5x"},
+      {value: "0.25x",label: "0.25x"},
       {value: "0x",label: "0x"},
     ],
     default: 1,
@@ -802,7 +803,7 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     scene.mods.setOverrideEggHatchWaves(value, scene);
     break;
   case SettingKeys.Egg_Rarity:
-    scene.mods.overrideEggRarityIndex = value;
+    scene.mods.overrideEggRarityIndex = parseInt(Setting[index].options[value].value);
     break;
   case SettingKeys.New_Starters_From_Eggs:
     scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
