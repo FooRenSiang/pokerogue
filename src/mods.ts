@@ -28,6 +28,8 @@ import Trainer, { TrainerVariant } from "./field/trainer";
 import { trainerConfigs } from "./data/trainer-config";
 import { starterSelectUiHandler } from "./locales/en/starter-select-ui-handler";
 import { Scene } from "phaser";
+import { EggSourceType } from "./enums/egg-source-types";
+import { IEggOptions } from "./data/egg";
 
 export class Mods {
 
@@ -240,7 +242,9 @@ export class Mods {
   /**
    * Rarer eggs
    */
-  overrideEggRarity(tierValue: integer, tierValueOffset: 0 | 1): EggTier {
+  overrideEggRarity(sourceType: EggSourceType): EggTier {
+    const tierValueOffset = sourceType === EggSourceType.GACHA_LEGENDARY ? 1 : 0;
+    const tierValue = Utils.randInt(256);
     switch (this.overrideEggRarityIndex) {
     case 98:
       return EggTier.GREAT;
