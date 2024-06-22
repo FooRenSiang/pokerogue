@@ -32,13 +32,13 @@ import { Scene } from "phaser";
 export class Mods {
 
   //SETTINGS
-  public startinglevel: integer;
+  public startingLevel: integer;
 
-  public freereroll: integer;
+  public freeReroll: integer;
 
-  public alwayscatch: integer;
+  public alwaysCatch: integer;
 
-  public maxluck: integer
+  public maxLuck: integer
 
   public infiniteBalls: boolean;
 
@@ -57,6 +57,8 @@ export class Mods {
   public overrideEggRarityIndex: integer;
 
   public eggPoolWeight: integer;
+
+  public formChangeRarity: boolean;
 
   public candyCostMultiplier: integer;
 

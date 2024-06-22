@@ -86,6 +86,7 @@ export const SettingKeys = {
   Quick_Egg_Hatch: "QUICK_EGG_HATCH",
   Egg_Rarity: "EGG_RARITY",
   New_Starters_From_Eggs: "NEW_STARTERS_FROM_EGGS",
+  Form_Change_Rarity: "FORM_CHANGE_RARITY",
   Candy_Cost_Multiplier: "CANDY_COST_MULTIPLIER",
   Regen_Complete_Pokemon: "REGEN_COMPLETE_POKEMON",
   Unlimited_Starter_Points: "UNLIMITED_STARTER_POINTS",
@@ -254,6 +255,16 @@ export const Setting: Array<Setting> = [
       {value: "50%",label: "50%"},
       {value: "75%",label: "75%"},
       {value: "100%",label: "100%"},
+    ],
+    default: 1,
+    type: SettingType.MOD
+  },
+  {
+    key: SettingKeys.Form_Change_Rarity,
+    label: "Form Change Item Rarity",
+    options: [
+      {value: "Default",label: "Default"},
+      {value: "Rebalanced",label: "Rebalanced"},
     ],
     default: 1,
     type: SettingType.MOD
@@ -757,16 +768,16 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
 
   // Settings for Mod UI
   case SettingKeys.Starting_Level:
-    scene.mods.startinglevel = parseInt(Setting[index].options[value].value);
+    scene.mods.startingLevel = parseInt(Setting[index].options[value].value);
     break;
   case SettingKeys.Free_Reroll:
-    scene.mods.freereroll = value == 1 ? 0 : 1;
+    scene.mods.freeReroll = value == 1 ? 0 : 1;
     break;
   case SettingKeys.Always_Catch:
-    scene.mods.alwayscatch = value;
+    scene.mods.alwaysCatch = value;
     break;
   case SettingKeys.Max_Luck:
-    scene.mods.maxluck = value;
+    scene.mods.maxLuck = value;
     break;
   case SettingKeys.Infinite_Pokeballs:
     scene.mods.infiniteBalls = value == 1 ? true : false;
@@ -795,6 +806,9 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
     break;
   case SettingKeys.New_Starters_From_Eggs:
     scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
+    break;
+  case SettingKeys.Form_Change_Rarity:
+    scene.mods.formChangeRarity = value == 1 ? true : false;
     break;
   case SettingKeys.Candy_Cost_Multiplier:
     scene.mods.candyCostMultiplier = parseFloat(Setting[index].options[value].value.replace("x", ""));

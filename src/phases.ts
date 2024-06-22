@@ -341,7 +341,7 @@ export class TitlePhase extends Phase {
         this.scene.money = this.scene.gameMode.getStartingMoney();
 
         const starters = getDailyRunStarters(this.scene, seed);
-        const startingLevel = this.scene.mods.startinglevel;
+        const startingLevel = this.scene.mods.startingLevel;
 
         const party = this.scene.getParty();
         const loadPokemonAssets: Promise<void>[] = [];
@@ -601,7 +601,7 @@ export class SelectStarterPhase extends Phase {
         starterGender = Overrides.GENDER_OVERRIDE;
       }
       const starterIvs = this.scene.gameData.dexData[starter.species.speciesId].ivs.slice(0);
-      const starterPokemon = this.scene.addPlayerPokemon(starter.species, this.scene.mods.startinglevel, starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
+      const starterPokemon = this.scene.addPlayerPokemon(starter.species, this.scene.mods.startingLevel, starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
       starterPokemon.tryPopulateMoveset(starter.moveset);
       if (starter.passive) {
         starterPokemon.passive = true;
@@ -4776,7 +4776,7 @@ export class AttemptCapturePhase extends PokemonPhase {
     const _3m = 3 * pokemon.getMaxHp();
     const _2h = 2 * pokemon.hp;
     const catchRate = pokemon.species.catchRate;
-    const pokeballMultiplier = this.scene.mods.alwayscatch == 1 ? -1 : getPokeballCatchMultiplier(this.pokeballType);
+    const pokeballMultiplier = this.scene.mods.alwaysCatch == 1 ? -1 : getPokeballCatchMultiplier(this.pokeballType);
     const statusMultiplier = pokemon.status ? getStatusEffectCatchRateMultiplier(pokemon.status.effect) : 1;
     const x = Math.round((((_3m - _2h) * catchRate * pokeballMultiplier) / _3m) * statusMultiplier);
     const y = Math.round(65536 / Math.sqrt(Math.sqrt(255 / x)));
@@ -5260,7 +5260,7 @@ export class SelectModifierPhase extends BattlePhase {
     } else {
       baseValue = 250;
     }
-    return Math.min(Math.ceil(this.scene.currentBattle.waveIndex / 10) * baseValue * Math.pow(2, this.rerollCount) * this.scene.mods.freereroll, Number.MAX_SAFE_INTEGER);
+    return Math.min(Math.ceil(this.scene.currentBattle.waveIndex / 10) * baseValue * Math.pow(2, this.rerollCount) * this.scene.mods.freeReroll, Number.MAX_SAFE_INTEGER);
   }
 
   getPoolType(): ModifierPoolType {
