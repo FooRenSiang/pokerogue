@@ -1308,7 +1308,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           const showUseCandies = () => {
             const options = [];
             if (!(passiveAttr & PassiveAttr.UNLOCKED)) {
-              const passiveCost = getPassiveCandyCount(speciesStarters[this.lastSpecies.speciesId]);
+              const passiveCost = this.scene.mods.candyCostMultiplier * getPassiveCandyCount(speciesStarters[this.lastSpecies.speciesId]);
               options.push({
                 label: `x${passiveCost} ${i18next.t("starterSelectUiHandler:unlockPassive")} (${allAbilities[starterPassiveAbilities[this.lastSpecies.speciesId]].name})`,
                 handler: () => {
@@ -1343,7 +1343,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
             }
             const valueReduction = starterData.valueReduction;
             if (valueReduction < 2) {
-              const reductionCost = getValueReductionCandyCounts(speciesStarters[this.lastSpecies.speciesId])[valueReduction];
+              const reductionCost = this.scene.mods.candyCostMultiplier * getValueReductionCandyCounts(speciesStarters[this.lastSpecies.speciesId])[valueReduction];
               options.push({
                 label: `x${reductionCost} ${i18next.t("starterSelectUiHandler:reduceCost")}`,
                 handler: () => {
