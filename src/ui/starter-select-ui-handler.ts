@@ -1362,8 +1362,41 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                 itemArgs: starterColors[this.lastSpecies.speciesId]
               });
             }
+            const natureCost = Math.ceil((25 - 2.5 * (speciesStarters[this.lastSpecies.speciesId] - 1)) * this.scene.mods.candyCostMultiplier);
             if(this.scene.gameData.getNaturesForAttr(this.speciesStarterDexEntry.natureAttr).length < 25){
+              options.push({
+                label: `x${natureCost} Unlock All Natures`,
+                handler: () => {
+                  if (Overrides.FREE_CANDY_UPGRADE_OVERRIDE || candyCount >= natureCost) {
+                    this.scene.gameData.dexData[this.lastSpecies.speciesId].natureAttr = 67108862;
+                    if (!Overrides.FREE_CANDY_UPGRADE_OVERRIDE) {
+                      starterData.candyCount -= natureCost;
+                    }
+                    this.pokemonCandyCountText.setText(`x${starterData.candyCount}`);
+                    this.scene.gameData.saveSystem().then(success => {
+                      if (!success) {
+                        return this.scene.reset(true);
+                      }
+                    });
+                    ui.setMode(Mode.STARTER_SELECT);
+                    this.setSpeciesDetails(this.lastSpecies, undefined, undefined, undefined, undefined, undefined, undefined);
 
+                    // Update the candy upgrade display
+                    if (this.isUpgradeIconEnabled() ) {
+                      this.setUpgradeIcon(this.cursor);
+                    }
+                    if (this.isUpgradeAnimationEnabled()) {
+                      const genSpecies = this.genSpecies[this.lastSpecies.generation - 1];
+                      this.setUpgradeAnimation(this.starterSelectGenIconContainers[this.lastSpecies.generation - 1].getAt(genSpecies.indexOf(this.lastSpecies)), this.lastSpecies, true);
+                    }
+
+                    return true;
+                  }
+                  return false;
+                },
+                item: "candy",
+                itemArgs: starterColors[this.lastSpecies.speciesId],
+              });
             }
             const valueReduction = starterData.valueReduction;
             if (valueReduction < 2) {
