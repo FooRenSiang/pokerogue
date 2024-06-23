@@ -85,10 +85,10 @@ export const SettingKeys = {
   Infinite_Gacha_Vouchers: "INFINITE_GACHA_VOUCHERS",
   Quick_Egg_Hatch: "QUICK_EGG_HATCH",
   Egg_Rarity: "EGG_RARITY",
-  New_Starters_From_Eggs: "NEW_STARTERS_FROM_EGGS",
+  // New_Starters_From_Eggs: "NEW_STARTERS_FROM_EGGS",
   Form_Change_Rarity: "FORM_CHANGE_RARITY",
   Candy_Cost_Multiplier: "CANDY_COST_MULTIPLIER",
-  Regen_Complete_Pokemon: "REGEN_COMPLETE_POKEMON",
+  // Regen_Complete_Pokemon: "REGEN_COMPLETE_POKEMON",
   Unlimited_Starter_Points: "UNLIMITED_STARTER_POINTS",
   Pandemic_Mode: "PANDEMIC_MODE",
 
@@ -247,6 +247,7 @@ export const Setting: Array<Setting> = [
     default: 2,
     type: SettingType.MOD
   },
+  /*
   {
     key: SettingKeys.New_Starters_From_Eggs,
     label: "New Starters From Eggs",
@@ -259,6 +260,7 @@ export const Setting: Array<Setting> = [
     default: 1,
     type: SettingType.MOD
   },
+  */
   {
     key: SettingKeys.Form_Change_Rarity,
     label: "Form Change Item Rarity",
@@ -282,6 +284,7 @@ export const Setting: Array<Setting> = [
     default: 1,
     type: SettingType.MOD
   },
+  /*
   {
     key: SettingKeys.Regen_Complete_Pokemon,
     label: "Regen Complete Pokemon",
@@ -294,6 +297,7 @@ export const Setting: Array<Setting> = [
     default: 1,
     type: SettingType.MOD
   },
+  */
   {
     key: SettingKeys.Unlimited_Starter_Points,
     label: "Unlimited Starter Points",
@@ -805,18 +809,18 @@ export function setSetting(scene: BattleScene, setting: string, value: integer):
   case SettingKeys.Egg_Rarity:
     scene.mods.overrideEggRarityIndex = parseInt(Setting[index].options[value].value);
     break;
-  case SettingKeys.New_Starters_From_Eggs:
-    scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
-    break;
+  // case SettingKeys.New_Starters_From_Eggs:
+  //   scene.mods.eggPoolWeight = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
+  //   break;
   case SettingKeys.Form_Change_Rarity:
     scene.mods.formChangeRarity = value == 1 ? true : false;
     break;
   case SettingKeys.Candy_Cost_Multiplier:
     scene.mods.candyCostMultiplier = parseFloat(Setting[index].options[value].value.replace("x", ""));
     break;
-  case SettingKeys.Regen_Complete_Pokemon:
-    scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
-    break;
+  // case SettingKeys.Regen_Complete_Pokemon:
+  //   scene.mods.regenPokeChance = parseFloat(Setting[index].options[value].value.replace("%", "")) / 100;
+  //   break;
   case SettingKeys.Unlimited_Starter_Points:
     scene.mods.unlimitedstarterpts = value == 1 ? true : false;
     break;
