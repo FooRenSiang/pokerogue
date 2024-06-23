@@ -1362,6 +1362,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                 itemArgs: starterColors[this.lastSpecies.speciesId]
               });
             }
+            if(this.scene.gameData.getNaturesForAttr(this.speciesStarterDexEntry.natureAttr).length < 25){
+
+            }
             const valueReduction = starterData.valueReduction;
             if (valueReduction < 2) {
               const reductionCost = Math.ceil(this.scene.mods.candyCostMultiplier * getValueReductionCandyCounts(speciesStarters[this.lastSpecies.speciesId])[valueReduction]);
@@ -1448,35 +1451,52 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
               });
             }
             // Modded Candy Shop
-            options.push({
-              label: "Unlock Egg Moves",
-              handler: () => {
-                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showEggMovesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
-                return true;
-              }
-            });
-            options.push({
-              label: "Unlock Shinies",
-              handler: () => {
-                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showShiniesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
-                return true;
-              }
-            });
-            options.push({
-              label: "Unlock Abilities",
-              handler: () => {
-                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showAbilityUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
-                return true;
-              }
-            });
-            options.push({
-              label: "Improve IVs",
-              handler: () => {
-                ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showIVsUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
-                return true;
-              }
-            });
-
+            if (this.scene.gameData.starterData[this.lastSpecies.speciesId].eggMoves != 15) {
+              options.push({
+                label: "Unlock Egg Moves",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showEggMovesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            const showshiny = this.scene.gameData.dexData[this.lastSpecies.speciesId].caughtAttr & 112n
+            if (showshiny != 112n) {
+              options.push({
+                label: "Unlock Shinies",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showShiniesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            const abilityAttr = this.scene.gameData.starterData[this.lastSpecies.speciesId].abilityAttr;
+            const unlockedAbilityAttr = [abilityAttr & AbilityAttr.ABILITY_1, abilityAttr & AbilityAttr.ABILITY_2, abilityAttr & AbilityAttr.ABILITY_HIDDEN].filter(
+              (a) => a
+            ).length;
+            const lockedAbilityAttr = this.lastSpecies.getAbilityCount();
+            if(unlockedAbilityAttr != lockedAbilityAttr){
+              options.push({
+                label: "Unlock Abilities",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showAbilityUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            var ivCheck = false;
+            for (let stat = 0; stat < 6; stat++) {
+              if (this.scene.gameData.dexData[this.lastSpecies.speciesId].ivs[stat] < 31) ivCheck = true;
+            }
+            if(ivCheck) {
+              options.push({
+                label: "Improve IVs",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showIVsUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
             options.push({
               label: i18next.t("menu:cancel"),
               handler: () => {
