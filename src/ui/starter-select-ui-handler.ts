@@ -2825,6 +2825,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           const thisObj = this;
           const originalStarterSelectCallback = this.starterSelectCallback;
           this.starterSelectCallback = null;
+          var pokeruscheck = this.scene.mods.pokerusPandemic;
           originalStarterSelectCallback(new Array(this.starterGens.length).fill(0).map(function (_, i) {
             const starterSpecies = thisObj.genSpecies[thisObj.starterGens[i]][thisObj.starterCursors[i]];
             return {
@@ -2834,7 +2835,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
               passive: !(thisObj.scene.gameData.starterData[starterSpecies.speciesId].passiveAttr ^ (PassiveAttr.ENABLED | PassiveAttr.UNLOCKED)),
               nature: thisObj.starterNatures[i] as Nature,
               moveset: thisObj.starterMovesets[i],
-              pokerus: !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
+              pokerus: pokeruscheck? true : !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
             };
           }));
         };
