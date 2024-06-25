@@ -188,8 +188,8 @@ export const modifierType: ModifierTypeTranslationEntries = {
     "BIG_NUGGET": { name: "Big Nugget" },
     "RELIC_GOLD": { name: "Relic Gold" },
 
-    "AMULET_COIN": { name: "Amulet Coin", description: "Increases money rewards by 50%." },
-    "GOLDEN_PUNCH": { name: "Golden Punch", description: "Grants 100% of direct damage inflicted as money." },
+    "AMULET_COIN": { name: "Amulet Coin", description: "Increases money rewards by 100%." },
+    "GOLDEN_PUNCH": { name: "Golden Punch", description: "Grants 200% of direct damage inflicted as money." },
     "COIN_CASE": { name: "Coin Case", description: "After every 10th battle, receive 10% of your money in interest." },
 
     "LOCK_CAPSULE": { name: "Lock Capsule", description: "Allows you to lock item rarities when rerolling items." },
