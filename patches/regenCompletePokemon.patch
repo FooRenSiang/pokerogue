@@ -1,0 +1,7 @@
+#src/field/arena.ts
++          regen = level < 30;
++          break;
++        }
+-      }
+      } //modded
+      regen = regen || this.scene.mods.regenerateCompletedPokemon(species, this.scene);
