@@ -889,7 +889,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     // Get this species ID's starter data
     const starterData = this.scene.gameData.starterData[speciesId];
 
-    return starterData.candyCount >= getPassiveCandyCount(speciesStarters[speciesId])
+    return starterData.candyCount >= getPassiveCandyCount(speciesStarters[speciesId])*this.scene.mods.candyCostMultiplier
       && !(starterData.passiveAttr & PassiveAttr.UNLOCKED);
   }
 
@@ -902,7 +902,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     // Get this species ID's starter data
     const starterData = this.scene.gameData.starterData[speciesId];
 
-    return starterData.candyCount >= getValueReductionCandyCounts(speciesStarters[speciesId])[starterData.valueReduction]
+    return starterData.candyCount >= getValueReductionCandyCounts(speciesStarters[speciesId])[starterData.valueReduction]*this.scene.mods.candyCostMultiplier
         && starterData.valueReduction < 2;
   }
 
@@ -915,7 +915,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     // Get this species ID's starter data
     const starterData = this.scene.gameData.starterData[speciesId];
 
-    return starterData.candyCount >= getSameSpeciesEggCandyCounts(speciesStarters[speciesId]);
+    return starterData.candyCount >= getSameSpeciesEggCandyCounts(speciesStarters[speciesId])*this.scene.mods.candyCostMultiplier;
   }
 
   /**
@@ -1345,7 +1345,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
           const showUseCandies = () => {
             const options = [];
             if (!(passiveAttr & PassiveAttr.UNLOCKED)) {
-              const passiveCost = getPassiveCandyCount(speciesStarters[this.lastSpecies.speciesId]);
+              const passiveCost = getPassiveCandyCount(speciesStarters[this.lastSpecies.speciesId])*this.scene.mods.candyCostMultiplier;
               options.push({
                 label: `x${passiveCost} ${i18next.t("starterSelectUiHandler:unlockPassive")} (${allAbilities[starterPassiveAbilities[this.lastSpecies.speciesId]].name})`,
                 handler: () => {
@@ -1382,7 +1382,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
             }
             const valueReduction = starterData.valueReduction;
             if (valueReduction < 2) {
-              const reductionCost = getValueReductionCandyCounts(speciesStarters[this.lastSpecies.speciesId])[valueReduction];
+              const reductionCost = getValueReductionCandyCounts(speciesStarters[this.lastSpecies.speciesId])[valueReduction]*this.scene.mods.candyCostMultiplier;
               options.push({
                 label: `x${reductionCost} ${i18next.t("starterSelectUiHandler:reduceCost")}`,
                 handler: () => {
@@ -1424,7 +1424,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
 
             // Same species egg menu option. Only visible if passive is bought
             if (passiveAttr & PassiveAttr.UNLOCKED) {
-              const sameSpeciesEggCost = getSameSpeciesEggCandyCounts(speciesStarters[this.lastSpecies.speciesId]);
+              const sameSpeciesEggCost = getSameSpeciesEggCandyCounts(speciesStarters[this.lastSpecies.speciesId])*this.scene.mods.candyCostMultiplier;
               options.push({
                 label: `x${sameSpeciesEggCost} ${i18next.t("starterSelectUiHandler:sameSpeciesEgg")}`,
                 handler: () => {
@@ -1462,6 +1462,53 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
                 },
                 item: "candy",
                 itemArgs: starterColors[this.lastSpecies.speciesId]
+              });
+            }
+            const isAnyIvBelow31 = [0, 1, 2, 3, 4, 5].some((stat) => this.scene.gameData.dexData[this.lastSpecies.speciesId].ivs[stat] < 31);
+            if (isAnyIvBelow31) {
+              options.push({
+                label: "Improve IVs",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showIVsUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            if (!this.scene.mods.hasAllAbilityAttrs(this.lastSpecies, starterData.abilityAttr)) {
+              options.push({
+                label: "Unlock Abilities",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showAbilityUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            if (starterData.eggMoves !== 15) {
+              options.push({
+                label: "Unlock Egg Moves",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showEggMovesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            if (!this.scene.mods.hasAllNatures(this.scene, this.lastSpecies)) {
+              options.push({
+                label: "Unlock Nature",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showNatureUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
+              });
+            }
+            const hasAllVariants = (attr: bigint) => (attr & DexAttr.VARIANT_3) && (attr & DexAttr.VARIANT_2) && (attr & DexAttr.SHINY);
+            if (!hasAllVariants(this.scene.gameData.dexData[this.lastSpecies.speciesId].caughtAttr)) {
+              options.push({
+                label: "Unlock Shinies",
+                handler: () => {
+                  ui.setMode(Mode.STARTER_SELECT).then(() => this.scene.mods.showShiniesUnlock(this.scene, ui, this.lastSpecies, candyCount, this, this.pokemonCandyCountText));
+                  return true;
+                }
               });
             }
             options.push({

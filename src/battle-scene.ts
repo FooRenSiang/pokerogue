@@ -61,7 +61,9 @@ import { BattleStyle } from "#enums/battle-style";
 import { Biome } from "#enums/biome";
 import { ExpNotification } from "#enums/exp-notification";
 import { MoneyFormat } from "#enums/money-format";
-import { Moves } from "#enums/moves";
+import { Moves } from "#enums/moves"; //modded
+import { Mods } from "./mods";
+import { ModData } from "./mod-Data";
 import { PlayerGender } from "#enums/player-gender";
 import { Species } from "#enums/species";
 import { UiTheme } from "#enums/ui-theme";
@@ -245,7 +247,9 @@ export default class BattleScene extends SceneBase {
 
   public rngCounter: integer = 0;
   public rngSeedOverride: string = "";
-  public rngOffset: integer = 0;
+  public rngOffset: integer = 0; //modded
+  public mods: Mods = new Mods();
+  public modData: ModData;
 
   public inputMethod: string;
   private infoToggles: InfoToggle[] = [];
@@ -311,7 +315,8 @@ export default class BattleScene extends SceneBase {
   create() {
     initGameSpeed.apply(this);
     this.inputController = new InputsController(this);
-    this.uiInputs = new UiInputs(this, this.inputController);
+    this.uiInputs = new UiInputs(this, this.inputController); //modded
+    //this.modData = new ModData(this);
 
     this.gameData = new GameData(this);
 
@@ -906,7 +911,8 @@ export default class BattleScene extends SceneBase {
   }
 
   reset(clearScene: boolean = false, clearData: boolean = false, reloadI18n: boolean = false): void {
-    if (clearData) {
+    if (clearData) { //modded
+      //this.modData = new ModData(this);
       this.gameData = new GameData(this);
     }
 

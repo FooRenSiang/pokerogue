@@ -144,7 +144,8 @@ export class EggHatchPhase extends Phase {
 
       this.pokemon = pokemon;
 
-      pokemon.loadAssets().then(() => {
+      pokemon.loadAssets().then(() => { //modded
+        return this.infoContainer.show(this.pokemon, false, 16).then(() => setTimeout(() => this.scene.mods.fastHatchAnimation(this.scene, pokemon, this.eggMoveIndex, this.eggContainer, this.pokemonSprite, this.pokemonShinySparkle).then(() => this.end()), 100));
         this.canSkip = true;
 
         this.scene.time.delayedCall(1000, () => {

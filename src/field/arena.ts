@@ -138,7 +138,8 @@ export class Arena {
           regen = level < 30;
           break;
         }
-      }
+      } //modded
+      regen = regen || this.scene.mods.regenerateCompletedPokemon(species, this.scene);
     }
 
     if (regen && (attempt || 0) < 10) {

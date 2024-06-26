@@ -324,7 +324,7 @@ export default class AbstractSettingsUiHandler extends UiHandler {
     newValueLabel.setShadowColor(this.getTextColor(TextStyle.SETTINGS_SELECTED, true));
 
     if (save) {
-      this.scene.gameData.saveSetting(setting.key, cursor);
+      this.scene.gameData.saveSetting(setting.key, cursor, this.localStorageKey);
       if (this.reloadSettings.includes(setting)) {
         this.reloadRequired = true;
       }

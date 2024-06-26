@@ -39,7 +39,8 @@ import { Device } from "#enums/devices";
 import { GameDataType } from "#enums/game-data-type";
 import { Moves } from "#enums/moves";
 import { PlayerGender } from "#enums/player-gender";
-import { Species } from "#enums/species";
+import { Species } from "#enums/species"; //modded
+import { setModSetting } from "./settings/mod-settings";
 
 export const defaultStarterSpecies: Species[] = [
   Species.BULBASAUR, Species.CHARMANDER, Species.SQUIRTLE,
@@ -615,18 +616,22 @@ export class GameData {
    * @param valueIndex index of the setting's option
    * @returns true
    */
-  public saveSetting(setting: string, valueIndex: integer): boolean {
-    let settings: object = {};
-    if (localStorage.hasOwnProperty("settings")) {
-      settings = JSON.parse(localStorage.getItem("settings"));
+  public saveSetting(setting: string, valueIndex: integer, location?: PropertyKey): boolean {
+    let saveLocation = location;
+    if (!location) {
+      saveLocation = "settings";
     }
-
-    setSetting(this.scene, setting, valueIndex);
-
+    let settings: object = {};
+    if (localStorage.hasOwnProperty(saveLocation)) {
+      settings = JSON.parse(localStorage.getItem(saveLocation.toString()));
+    }
+    if (saveLocation === "settings_mods") {
+      setModSetting(this.scene, setting, valueIndex);
+    } else {
+      setSetting(this.scene, setting, valueIndex);
+    }
     settings[setting] = valueIndex;
-
-    localStorage.setItem("settings", JSON.stringify(settings));
-
+    localStorage.setItem(saveLocation.toString(), JSON.stringify(settings));
     return true;
   }
 
@@ -735,6 +740,13 @@ export class GameData {
 
     for (const setting of Object.keys(settings)) {
       setSetting(this.scene, setting, settings[setting]);
+    } //modded
+    if (!localStorage.hasOwnProperty("settings_mods")) {
+      return false;
+    }
+    const settingsMods = JSON.parse(localStorage.getItem("settings_mods"));
+    for (const setting of Object.keys(settingsMods)) {
+      setModSetting(this.scene, setting, settingsMods[setting]);
     }
   }
 
