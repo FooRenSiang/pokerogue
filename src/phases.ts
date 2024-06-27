@@ -341,7 +341,10 @@ export class TitlePhase extends Phase {
         this.scene.money = this.scene.gameMode.getStartingMoney();
 
         const starters = getDailyRunStarters(this.scene, seed);
-        const startingLevel = this.scene.gameMode.getStartingLevel();
+
+        // RIze2kNight Modded
+        const moddedLevel = this.scene.mods.startingLevel;
+        const startingLevel = moddedLevel? moddedLevel : this.scene.gameMode.getStartingLevel();
 
         const party = this.scene.getParty();
         const loadPokemonAssets: Promise<void>[] = [];
@@ -601,7 +604,10 @@ export class SelectStarterPhase extends Phase {
         starterGender = Overrides.GENDER_OVERRIDE;
       }
       const starterIvs = this.scene.gameData.dexData[starter.species.speciesId].ivs.slice(0);
-      const starterPokemon = this.scene.addPlayerPokemon(starter.species, this.scene.gameMode.getStartingLevel(), starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
+
+      // RIze2kNight Modded
+      const moddedLevel = this.scene.mods.startingLevel;
+      const starterPokemon = this.scene.addPlayerPokemon(starter.species, moddedLevel? moddedLevel : this.scene.gameMode.getStartingLevel(), starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
       starterPokemon.tryPopulateMoveset(starter.moveset);
       if (starter.passive) {
         starterPokemon.passive = true;
