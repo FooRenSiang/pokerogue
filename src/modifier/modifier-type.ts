@@ -1354,7 +1354,7 @@ const modifierPool: ModifierPool = {
     }, 4),
     new WeightedModifierType(modifierTypes.BASE_STAT_BOOSTER, 3),
     new WeightedModifierType(modifierTypes.TERA_SHARD, 1),
-    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 4 : 0),
+    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => (party[0].scene.gameMode.isSplicedOnly || party[0].scene.mods.formChangeRarity) && party.filter(p => !p.fusionSpecies).length > 1 ? 4 : 0),
     new WeightedModifierType(modifierTypes.VOUCHER, (party: Pokemon[], rerollCount: integer) => !party[0].scene.gameMode.isDaily ? Math.max(1 - rerollCount, 0) : 0, 1),
   ].map(m => {
     m.setTier(ModifierTier.GREAT); return m;
@@ -1393,6 +1393,9 @@ const modifierPool: ModifierPool = {
     new WeightedModifierType(modifierTypes.EXP_BALANCE, 4),
     new WeightedModifierType(modifierTypes.TERA_ORB, (party: Pokemon[]) => Math.min(Math.max(Math.floor(party[0].scene.currentBattle.waveIndex / 50) * 2, 1), 4), 4),
     new WeightedModifierType(modifierTypes.WIDE_LENS, 4),
+    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : 18),
+    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
   ].map(m => {
     m.setTier(ModifierTier.ULTRA); return m;
   }),
@@ -1413,9 +1416,9 @@ const modifierPool: ModifierPool = {
     new WeightedModifierType(modifierTypes.KINGS_ROCK, 3),
     new WeightedModifierType(modifierTypes.LOCK_CAPSULE, 3),
     new WeightedModifierType(modifierTypes.SUPER_EXP_CHARM, 10),
-    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, 18),
-    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
-    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : 18),
+    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
     new WeightedModifierType(modifierTypes.VOUCHER_PLUS, (party: Pokemon[], rerollCount: integer) => !party[0].scene.gameMode.isDaily ? Math.max(5 - rerollCount * 2, 0) : 0, 5),
   ].map(m => {
     m.setTier(ModifierTier.ROGUE); return m;
@@ -1426,7 +1429,7 @@ const modifierPool: ModifierPool = {
     new WeightedModifierType(modifierTypes.HEALING_CHARM, 18),
     new WeightedModifierType(modifierTypes.MULTI_LENS, 18),
     new WeightedModifierType(modifierTypes.VOUCHER_PREMIUM, (party: Pokemon[], rerollCount: integer) => !party[0].scene.gameMode.isDaily && !party[0].scene.gameMode.isEndless && !party[0].scene.gameMode.isSplicedOnly ? Math.max(6 - rerollCount * 2, 0) : 0, 6),
-    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => !party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 24 : 0, 24),
+    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity && !party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 24 : 0, 24),
     new WeightedModifierType(modifierTypes.MINI_BLACK_HOLE, (party: Pokemon[]) => party[0].scene.gameData.unlocks[Unlockables.MINI_BLACK_HOLE] ? 1 : 0, 1),
   ].map(m => {
     m.setTier(ModifierTier.MASTER); return m;
