@@ -5268,7 +5268,8 @@ export class SelectModifierPhase extends BattlePhase {
     } else {
       baseValue = 250;
     }
-    return Math.min(Math.ceil(this.scene.currentBattle.waveIndex / 10) * baseValue * Math.pow(2, this.rerollCount), Number.MAX_SAFE_INTEGER);
+    // RIze2kNight Modded
+    return Math.min(Math.ceil(this.scene.currentBattle.waveIndex / 10) * baseValue * Math.pow(2, this.rerollCount) * this.scene.mods.freeReroll, Number.MAX_SAFE_INTEGER);
   }
 
   getPoolType(): ModifierPoolType {
