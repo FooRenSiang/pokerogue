@@ -29,9 +29,53 @@ export const SettingKeys = {
   EGG_SPECIES_PITTY: "EGG_SPECIES_PITTY", //Done
   CANDY_COST_MULTIPLIER: "CANDY_COST_MULTIPLIER", //Done
   REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  // RIze2kNight
+  STARTING_LEVEL: "STARTING_LEVEL",
+  FREE_REROLL: "FREE_REROLL",
+  ALWAYS_CATCH: "ALWAYS_CATCH",
+  MAX_LUCK: "MAX_LUCK",
+  FORM_CHANGE_RARITY: "FORM_CHANGE_RARITY",
+  UNLIMITED_STARTER_POINTS: "UNLIMITED_STARTER_POINTS",
+  VITAMIN_TRANSFER: "VITAMIN_TRANSFER",
+  PANDEMIC_MODE: "PANDEMIC_MODE",
 };
 
 export const ModSetting: Array<Setting> = [
+  {
+    key: SettingKeys.STARTING_LEVEL,
+    label: "Starting Level",
+    options: [
+      {value: "0", label: "Off"},
+      {value: "1", label: "1"},
+      {value: "5", label: "5"},
+      {value: "10", label: "10"},
+      {value: "20", label: "20"},
+    ],
+    default: 1,
+    type: null
+  },
+  {
+    key: SettingKeys.FREE_REROLL,
+    label: "Free Reroll",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+  {
+    key: SettingKeys.ALWAYS_CATCH,
+    label: "Always Catch",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+  {
+    key: SettingKeys.MAX_LUCK,
+    label: "Max Luck",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
   {
     key: SettingKeys.SHINY,
     label: "Shiny Chance",
@@ -45,16 +89,16 @@ export const ModSetting: Array<Setting> = [
         label: "2x"
       },
       {
-        value: "4",
-        label: "4x"
-      },
-      {
         value: "6",
         label: "6x"
       },
       {
         value: "256",
         label: "256x"
+      },
+      {
+        value: "768",
+        label: "768x"
       },
       {
         value: "2048",
@@ -217,6 +261,10 @@ export const ModSetting: Array<Setting> = [
         label: "0.5x"
       },
       {
+        value: "0.25",
+        label: "0.25x"
+      },
+      {
         value: "0",
         label: "0x"
       },
@@ -246,6 +294,38 @@ export const ModSetting: Array<Setting> = [
       },
     ],
     default: 0,
+    type: null
+  },
+  {
+    key: SettingKeys.FORM_CHANGE_RARITY,
+    label: "Form Change Rarity",
+    options: [
+      {value: "0", label: "Default"},
+      {value: "1", label: "Rebalanced"},
+    ],
+    default: 1,
+    type: null
+  },
+  {
+    key: SettingKeys.UNLIMITED_STARTER_POINTS,
+    label: "Unlimited Starter Points",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+  {
+    key: SettingKeys.VITAMIN_TRANSFER,
+    label: "Vitamin Transfer",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+  {
+    key: SettingKeys.PANDEMIC_MODE,
+    label: "Pandemic Mode",
+    options: OFF_ON,
+    default: 0,
+    requireReload: true,
     type: null
   },
 ];
@@ -327,6 +407,33 @@ export function setModSetting(scene: BattleScene, setting: string, value: number
     break;
   case SettingKeys.REGEN_POKEMON:
     scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
+    break;
+
+  // RIze2kNight
+  case SettingKeys.STARTING_LEVEL:
+    scene.mods.startingLevel = parseInt(ModSetting[index].options[value].value);
+    break;
+  case SettingKeys.FREE_REROLL:
+    scene.mods.freeReroll = ModSetting[index].options[value].value === "On"? 0 : 1;
+    break;
+  case SettingKeys.ALWAYS_CATCH:
+    scene.mods.alwaysCatch = ModSetting[index].options[value].value === "On";
+    break;
+  case SettingKeys.MAX_LUCK:
+    scene.mods.maxLuck = ModSetting[index].options[value].value === "On";
+    break;
+  case SettingKeys.FORM_CHANGE_RARITY:
+    const formChangeCheck = parseInt(ModSetting[index].options[value].value);
+    scene.mods.formChangeRarity = formChangeCheck === 1;
+    break;
+  case SettingKeys.UNLIMITED_STARTER_POINTS:
+    scene.mods.unlimitedStarterPts = ModSetting[index].options[value].value === "On";
+    break;
+  case SettingKeys.VITAMIN_TRANSFER:
+    scene.mods.vitaminTransfer = ModSetting[index].options[value].value === "On";
+    break;
+  case SettingKeys.PANDEMIC_MODE:
+    scene.mods.pandemicMode = ModSetting[index].options[value].value === "On";
     break;
   }
   return true;

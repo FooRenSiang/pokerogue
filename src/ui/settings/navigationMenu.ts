@@ -27,14 +27,15 @@ export class NavigationManager {
    */
   constructor() {
     this.modes = [
-      Mode.SETTINGS, //modded
-      Mode.SETTINGS_MOD,
+      Mode.SETTINGS,
       Mode.SETTINGS_DISPLAY,
       Mode.SETTINGS_AUDIO,
       Mode.SETTINGS_GAMEPAD,
       Mode.SETTINGS_KEYBOARD,
+      // Modded
+      Mode.SETTINGS_MOD,
     ];
-    this.labels = [i18next.t("settings:general"), "Mods", i18next.t("settings:display"), i18next.t("settings:audio"), i18next.t("settings:gamepad"), i18next.t("settings:keyboard")];
+    this.labels = [i18next.t("settings:general"), i18next.t("settings:display"), i18next.t("settings:audio"), i18next.t("settings:gamepad"), i18next.t("settings:keyboard"), "Mods"];
   }
 
   public reset() {

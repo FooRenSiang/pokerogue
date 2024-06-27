@@ -43,6 +43,23 @@ export class Mods {
 
   public regenPokeChance: number = 0;
 
+  // RIze2kNight
+  public startingLevel: number = 5;
+
+  public freeReroll: number = 1;
+
+  public alwaysCatch: boolean = false;
+
+  public maxLuck: boolean = false;
+
+  public formChangeRarity: boolean = false;
+
+  public unlimitedStarterPts: boolean = false;
+
+  public vitaminTransfer: boolean = false;
+
+  public pandemicMode: boolean = false;
+
   /**
    * Adds egg moves to learnable moves
    */
