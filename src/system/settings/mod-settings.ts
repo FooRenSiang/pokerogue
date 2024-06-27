@@ -1,3 +1,4 @@
+import { vitaminTransfer } from "#app/modifier/modifier.js";
 import BattleScene from "../../battle-scene";
 import type { Setting } from "./settings";
 
@@ -430,7 +431,7 @@ export function setModSetting(scene: BattleScene, setting: string, value: number
     scene.mods.unlimitedStarterPts = ModSetting[index].options[value].value === "On";
     break;
   case SettingKeys.VITAMIN_TRANSFER:
-    scene.mods.vitaminTransfer = ModSetting[index].options[value].value === "On";
+    vitaminTransfer(ModSetting[index].options[value].value === "On");
     break;
   case SettingKeys.PANDEMIC_MODE:
     scene.mods.pandemicMode = ModSetting[index].options[value].value === "On";

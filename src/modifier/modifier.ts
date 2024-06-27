@@ -31,6 +31,10 @@ export type ModifierPredicate = (modifier: Modifier) => boolean;
 
 const iconOverflowIndex = 24;
 
+export const vitaminTransfer = (c: boolean) => {
+  return c;
+};
+
 export const modifierSortFunc = (a: Modifier, b: Modifier) => {
   const itemNameMatch = a.type.name.localeCompare(b.type.name);
   const typeNameMatch = a.constructor.name.localeCompare(b.constructor.name);
@@ -694,7 +698,7 @@ export class PokemonBaseStatModifier extends PokemonHeldItemModifier {
   }
 
   getTransferrable(_withinParty: boolean): boolean {
-    return false;
+    return vitaminTransfer? _withinParty : false;
   }
 
   getScoreMultiplier(): number {

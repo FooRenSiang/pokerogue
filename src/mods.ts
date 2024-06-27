@@ -56,7 +56,6 @@ export class Mods {
 
   public unlimitedStarterPts: boolean = false;
 
-  public vitaminTransfer: boolean = false;
 
   public pandemicMode: boolean = false;
 
