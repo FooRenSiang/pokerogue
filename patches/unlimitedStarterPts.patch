@@ -1,0 +1,59 @@
+#src/mods.ts
++  public regenPokeChance: number = 0;
+
+  public unlimitedStarterPts: boolean = false; //RIze2kNight
+
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  UNLIMITED_STARTER_POINTS: "UNLIMITED_STARTER_POINTS", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  {
++    key: SettingKeys.REGEN_POKEMON,
++    label: "Regen Complete Pokémon",
++    options: [
++      {
++        value: "25",
++        label: "25%"
++      },
++      {
++        value: "50",
++        label: "50%"
++      },
++      {
++        value: "75",
++        label: "75%"
++      },
++      {
++        value: "100",
++        label: "100%"
++      },
++    ],
++    default: 0,
++    type: null
++  },
+  {
+    key: SettingKeys.UNLIMITED_STARTER_POINTS,
+    label: "Unlimited Starter Points",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+
+  //RIze2kNight Mod
+  case SettingKeys.UNLIMITED_STARTER_POINTS:
+    scene.mods.unlimitedStarterPts = ModSetting[index].options[value].value === "On";
+    break;
+
+#src/ui/starter-select-ui-handler.ts
++    Challenge.applyChallenges(this.scene.gameMode, Challenge.ChallengeType.STARTER_POINTS, valueLimit);
+    // RIze2kNight Modded
+    if (this.scene.mods.unlimitedStarterPts) {
+      valueLimit.value = 60 ;
+    }

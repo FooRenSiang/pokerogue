@@ -1,0 +1,52 @@
+#src/mods.ts
++  public regenPokeChance: number = 0;
+
+  public startingLevel: number = 5; //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+
+  STARTING_LEVEL: "STARTING_LEVEL", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++export const ModSetting: Array<Setting> = [
+  {
+    key: SettingKeys.STARTING_LEVEL,
+    label: "Starting Level",
+    options: [
+      {value: "0", label: "Off"},
+      {value: "1", label: "1"},
+      {value: "5", label: "5"},
+      {value: "10", label: "10"},
+      {value: "20", label: "20"},
+    ],
+    default: 1,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+  
+  //RIze2kNight Mod
+  case SettingKeys.STARTING_LEVEL:
+    scene.mods.startingLevel = parseInt(ModSetting[index].options[value].value);
+    break;
+
+#src/phases.ts
+-        const starters = getDailyRunStarters(this.scene, seed);
+-        const startingLevel = this.scene.gameMode.getStartingLevel();
+        const starters = getDailyRunStarters(this.scene, seed);
+
+        // RIze2kNight Modded
+        const moddedLevel = this.scene.mods.startingLevel;
+        const startingLevel = moddedLevel? moddedLevel : this.scene.gameMode.getStartingLevel();
+
+#src/phases.ts
+-      const starterPokemon = this.scene.addPlayerPokemon(starter.species, this.scene.gameMode.getStartingLevel(), starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
+      
+      // RIze2kNight Modded
+      const moddedLevel = this.scene.mods.startingLevel;
+      const starterPokemon = this.scene.addPlayerPokemon(starter.species, moddedLevel? moddedLevel : this.scene.gameMode.getStartingLevel(), starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);

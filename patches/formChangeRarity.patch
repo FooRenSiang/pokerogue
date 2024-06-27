@@ -1,0 +1,82 @@
+#src/mods.ts
++  public regenPokeChance: number = 0;
+
+  public formChangeRarity: boolean = false; //RIze2kNight
+
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  FORM_CHANGE_RARITY: "FORM_CHANGE_RARITY", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  {
++    key: SettingKeys.REGEN_POKEMON,
++    label: "Regen Complete Pokémon",
++    options: [
++      {
++        value: "25",
++        label: "25%"
++      },
++      {
++        value: "50",
++        label: "50%"
++      },
++      {
++        value: "75",
++        label: "75%"
++      },
++      {
++        value: "100",
++        label: "100%"
++      },
++    ],
++    default: 0,
++    type: null
++  },
+  {
+    key: SettingKeys.FORM_CHANGE_RARITY,
+    label: "Form Change Rarity",
+    options: [
+      {value: "0", label: "Default"},
+      {value: "1", label: "Rebalanced"},
+    ],
+    default: 1,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+
+  //RIze2kNight Mod
+  case SettingKeys.FORM_CHANGE_RARITY:
+    const formChangeCheck = parseInt(ModSetting[index].options[value].value);
+    scene.mods.formChangeRarity = formChangeCheck === 1;
+    break;
+
+#src/modifier/modifier-type.ts
+-    new WeightedModifierType(modifierTypes.TERA_SHARD, 1),
+-    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 4 : 0),
+    new WeightedModifierType(modifierTypes.TERA_SHARD, 1),
+    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => (party[0].scene.gameMode.isSplicedOnly || party[0].scene.mods.formChangeRarity) && party.filter(p => !p.fusionSpecies).length > 1 ? 4 : 0),
+
+#src/modifier/modifier-type.ts
++    new WeightedModifierType(modifierTypes.WIDE_LENS, 4),
+    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : 18),
+    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+
+#src/modifier/modifier-type.ts
+-    new WeightedModifierType(modifierTypes.SUPER_EXP_CHARM, 10),
+-    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, 18),
+-    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+-    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.SUPER_EXP_CHARM, 10),
+    new WeightedModifierType(modifierTypes.FORM_CHANGE_ITEM, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : 18),
+    new WeightedModifierType(modifierTypes.MEGA_BRACELET, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+    new WeightedModifierType(modifierTypes.DYNAMAX_BAND, (party: Pokemon[]) => party[0].scene.mods.formChangeRarity ? 0 : Math.min(Math.ceil(party[0].scene.currentBattle.waveIndex / 50), 4) * 8, 32),
+
+#src/modifier/modifier-type.ts
+-    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => !party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 24 : 0, 24),
+    new WeightedModifierType(modifierTypes.DNA_SPLICERS, (party: Pokemon[]) => !party[0].scene.mods.formChangeRarity && !party[0].scene.gameMode.isSplicedOnly && party.filter(p => !p.fusionSpecies).length > 1 ? 24 : 0, 24),

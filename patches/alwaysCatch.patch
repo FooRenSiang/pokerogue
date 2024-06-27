@@ -1,0 +1,33 @@
+#src/mods.ts
++  public regenPokeChance: number = 0;
+
+  public alwaysCatch: boolean = false; //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  ALWAYS_CATCH: "ALWAYS_CATCH", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++export const ModSetting: Array<Setting> = [
+  {
+    key: SettingKeys.ALWAYS_CATCH,
+    label: "Always Catch",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+  
+  //RIze2kNight Mod
+  case SettingKeys.ALWAYS_CATCH:
+    scene.mods.alwaysCatch = ModSetting[index].options[value].value === "On";
+    break;
+
+#src/phases.ts
+-    const pokeballMultiplier = getPokeballCatchMultiplier(this.pokeballType);
+    const pokeballMultiplier = this.scene.mods.alwaysCatch? -1 : getPokeballCatchMultiplier(this.pokeballType); //RIze2kNight Modded

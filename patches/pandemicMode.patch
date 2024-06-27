@@ -1,0 +1,89 @@
+#src/mods.ts
++  public regenPokeChance: number = 0;
+
+  public pandemicMode: boolean = false; //RIze2kNight
+
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  PANDEMIC_MODE: "PANDEMIC_MODE", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  {
++    key: SettingKeys.REGEN_POKEMON,
++    label: "Regen Complete Pokémon",
++    options: [
++      {
++        value: "25",
++        label: "25%"
++      },
++      {
++        value: "50",
++        label: "50%"
++      },
++      {
++        value: "75",
++        label: "75%"
++      },
++      {
++        value: "100",
++        label: "100%"
++      },
++    ],
++    default: 0,
++    type: null
++  },
+  {
+    key: SettingKeys.PANDEMIC_MODE,
+    label: "Pandemic Mode",
+    options: OFF_ON,
+    default: 0,
+    requireReload: true,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+
+  //RIze2kNight Mod
+  case SettingKeys.PANDEMIC_MODE:
+    scene.mods.pandemicMode = ModSetting[index].options[value].value === "On";
+    break;
+
+#src/ui/starter-select-ui-handler.ts
+-    this.pokerusCursorObjs = new Array(3).fill(null).map(() => {
+    // RIze2kNight Modded
+    const pandemicCheck = this.scene.mods.pandemicMode;
+
+    this.pokerusCursorObjs = new Array(pandemicCheck? 5e3 : 3).fill(null).map(() => {
+
+#src/ui/starter-select-ui-handler.ts
+-    this.scene.executeWithSeedOffset(() => {
+-      for (let c = 0; c < 3; c++) {
+    this.scene.executeWithSeedOffset(() => {
+      for (let c = 0; c < (pandemicCheck? 5e3 : 3); c++) {
+
+#src/ui/starter-select-ui-handler.ts
+-          for (let pc = 0; pc < c; pc++) {
+-            if (this.pokerusGens[pc] === species.generation -1 && this.pokerusCursors[pc] === pokerusCursor) {
+-              dupe = true;
+-              break;
+          if (!pandemicCheck) {
+            for (let pc = 0; pc < c; pc++) {
+              if (this.pokerusGens[pc] === species.generation -1 && this.pokerusCursors[pc] === pokerusCursor) {
+                dupe = true;
+                break;
+              }
+
+#src/ui/starter-select-ui-handler.ts
++    ui.showText(i18next.t("starterSelectUiHandler:confirmStartTeam"), null, () => {
++      ui.setModeWithoutClear(Mode.CONFIRM, () => {
++        const startRun = () => {
+          // RIze2kNight Modded
+          const pandemicCheck = this.scene.mods.pandemicMode;
+
+#src/ui/starter-select-ui-handler.ts
+-              pokerus: !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
+              pokerus: pandemicCheck? true : !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
