@@ -63,7 +63,6 @@ import { ExpNotification } from "#enums/exp-notification";
 import { MoneyFormat } from "#enums/money-format";
 import { Moves } from "#enums/moves"; //modded
 import { Mods } from "./mods";
-import { ModData } from "./mod-Data";
 import { PlayerGender } from "#enums/player-gender";
 import { Species } from "#enums/species";
 import { UiTheme } from "#enums/ui-theme";
@@ -249,7 +248,6 @@ export default class BattleScene extends SceneBase {
   public rngSeedOverride: string = "";
   public rngOffset: integer = 0; //modded
   public mods: Mods = new Mods();
-  public modData: ModData;
 
   public inputMethod: string;
   private infoToggles: InfoToggle[] = [];
