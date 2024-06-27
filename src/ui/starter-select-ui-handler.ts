@@ -407,7 +407,10 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
       return container;
     });
 
-    this.pokerusCursorObjs = new Array(3).fill(null).map(() => {
+    // RIze2kNight Modded
+    const pandemicCheck = this.scene.mods.pandemicMode;
+
+    this.pokerusCursorObjs = new Array(pandemicCheck? 5e3 : 3).fill(null).map(() => {
       const cursorObj = this.scene.add.image(0, 0, "select_cursor_pokerus");
       cursorObj.setVisible(false);
       cursorObj.setOrigin(0, 0);
@@ -754,7 +757,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     date.setUTCHours(0, 0, 0, 0);
 
     this.scene.executeWithSeedOffset(() => {
-      for (let c = 0; c < 3; c++) {
+      for (let c = 0; c < (pandemicCheck? 5e3 : 3); c++) {
         let randomSpeciesId: Species;
         let species: PokemonSpecies;
         let pokerusCursor: integer;
@@ -772,10 +775,12 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
 
           generateSpecies();
 
-          for (let pc = 0; pc < c; pc++) {
-            if (this.pokerusGens[pc] === species.generation -1 && this.pokerusCursors[pc] === pokerusCursor) {
-              dupe = true;
-              break;
+          if (!pandemicCheck) {
+            for (let pc = 0; pc < c; pc++) {
+              if (this.pokerusGens[pc] === species.generation -1 && this.pokerusCursors[pc] === pokerusCursor) {
+                dupe = true;
+                break;
+              }
             }
           }
         } while (dupe);
@@ -1844,6 +1849,10 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
 
     Challenge.applyChallenges(this.scene.gameMode, Challenge.ChallengeType.STARTER_POINTS, valueLimit);
 
+    // RIze2kNight Modded
+    if (this.scene.mods.unlimitedStarterPts) {
+      valueLimit.value = 60 ;
+    }
     return valueLimit.value;
   }
 
@@ -2631,6 +2640,9 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
     ui.showText(i18next.t("starterSelectUiHandler:confirmStartTeam"), null, () => {
       ui.setModeWithoutClear(Mode.CONFIRM, () => {
         const startRun = () => {
+          // RIze2kNight Modded
+          const pandemicCheck = this.scene.mods.pandemicMode;
+
           this.scene.money = this.scene.gameMode.getStartingMoney();
           ui.setMode(Mode.STARTER_SELECT);
           const thisObj = this;
@@ -2645,7 +2657,7 @@ export default class StarterSelectUiHandler extends MessageUiHandler {
               passive: !(thisObj.scene.gameData.starterData[starterSpecies.speciesId].passiveAttr ^ (PassiveAttr.ENABLED | PassiveAttr.UNLOCKED)),
               nature: thisObj.starterNatures[i] as Nature,
               moveset: thisObj.starterMovesets[i],
-              pokerus: !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
+              pokerus: pandemicCheck? true : !![ 0, 1, 2 ].filter(n => thisObj.pokerusGens[n] === starterSpecies.generation - 1 && thisObj.pokerusCursors[n] === thisObj.genSpecies[starterSpecies.generation - 1].indexOf(starterSpecies)).length
             };
           }));
         };
