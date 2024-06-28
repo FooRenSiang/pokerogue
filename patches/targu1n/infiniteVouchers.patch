@@ -1,3 +1,4 @@
+~targu1n-InfiniteVouchers
 #src/ui/egg-gacha-ui-handler.ts
 -            if (!this.scene.gameData.voucherCounts[VoucherType.REGULAR] && !Overrides.EGG_FREE_GACHA_PULLS_OVERRIDE) {
             if (!this.scene.gameData.voucherCounts[VoucherType.REGULAR] && !Overrides.EGG_FREE_GACHA_PULLS_OVERRIDE && !this.scene.mods.infiniteVouchers) {

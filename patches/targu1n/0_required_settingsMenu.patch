@@ -1,28 +1,24 @@
+~targu1n-Settings
 #src/battle-scene.ts
--import { Moves } from "#enums/moves";
-import { Moves } from "#enums/moves"; //modded
++import { Moves } from "#enums/moves";
 import { Mods } from "./mods";
 import { ModData } from "./mod-Data";
 
 #src/battle-scene.ts
--  public rngOffset: integer = 0;
-  public rngOffset: integer = 0; //modded
++  public rngOffset: integer = 0;
   public mods: Mods = new Mods();
   public modData: ModData;
 
 #src/battle-scene.ts
--    this.uiInputs = new UiInputs(this, this.inputController);
-    this.uiInputs = new UiInputs(this, this.inputController); //modded
++    this.uiInputs = new UiInputs(this, this.inputController);
     //this.modData = new ModData(this);
 
 #src/battle-scene.ts
--    if (clearData) {
-    if (clearData) { //modded
++    if (clearData) {
       //this.modData = new ModData(this);
 
 #src/ui-inputs.ts
--import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";
-import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler"; //modded
++import SettingsAudioUiHandler from "./ui/settings/settings-audio-ui-handler";
 import ModSettingsUiHandler from "./ui/settings/mod-settings-ui-handler";
 
 #src/ui-inputs.ts
@@ -30,8 +26,7 @@ import ModSettingsUiHandler from "./ui/settings/mod-settings-ui-handler";
     const whitelist = [StarterSelectUiHandler, SettingsUiHandler, ModSettingsUiHandler, SettingsDisplayUiHandler, SettingsAudioUiHandler, SettingsGamepadUiHandler, SettingsKeyboardUiHandler];
 
 #src/system/game-data.ts
--import { Species } from "#enums/species";
-import { Species } from "#enums/species"; //modded
++import { Species } from "#enums/species";
 import { setModSetting } from "./settings/mod-settings";
 
 #src/system/game-data.ts
@@ -73,8 +68,7 @@ import { setModSetting } from "./settings/mod-settings";
 #src/system/game-data.ts
 +    for (const setting of Object.keys(settings)) {
 +      setSetting(this.scene, setting, settings[setting]);
--    }
-    } //modded
++    }
     if (!localStorage.hasOwnProperty("settings_mods")) {
       return false;
     }
@@ -85,18 +79,15 @@ import { setModSetting } from "./settings/mod-settings";
     }
 
 #src/ui/ui.ts
--import SettingsUiHandler from "./settings/settings-ui-handler";
-import SettingsUiHandler from "./settings/settings-ui-handler"; //modded
++import SettingsUiHandler from "./settings/settings-ui-handler";
 import ModSettingsUiHandler from "./settings/mod-settings-ui-handler";
 
 #src/ui/ui.ts
--  SETTINGS,
-  SETTINGS, //modded
++  SETTINGS,
   SETTINGS_MOD,
 
 #src/ui/ui.ts
--      new SettingsUiHandler(scene),
-      new SettingsUiHandler(scene), //modded
++      new SettingsUiHandler(scene),
       new ModSettingsUiHandler(scene),
 
 #src/ui/settings/abstract-settings-ui-handler.ts
@@ -105,8 +96,7 @@ import ModSettingsUiHandler from "./settings/mod-settings-ui-handler";
 
 
 #src/ui/settings/navigationMenu.ts
--      Mode.SETTINGS,
-      Mode.SETTINGS, //modded
++      Mode.SETTINGS,
       Mode.SETTINGS_MOD,
 
 #src/ui/settings/navigationMenu.ts

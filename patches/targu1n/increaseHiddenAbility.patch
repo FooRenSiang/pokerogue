@@ -1,3 +1,4 @@
+~targu1n-IncreaseHA
 #src/field/pokemon.ts
 -    const hiddenAbilityChance = new Utils.IntegerHolder(256);
     const hiddenAbilityChance = new Utils.IntegerHolder(256 / this.scene.mods.hiddenAbilityModifier);

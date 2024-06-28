@@ -1,7 +1,0 @@
-#src/field/pokemon.ts
--      shinyThreshold.value = thresholdOverride;
--    }
-      shinyThreshold.value = thresholdOverride;
-    } //modded
-    shinyThreshold.value *= this.scene.mods.shinyModifier;
-

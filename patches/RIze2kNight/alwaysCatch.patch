@@ -1,3 +1,4 @@
+~rize2knight-alwaysCatch
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 

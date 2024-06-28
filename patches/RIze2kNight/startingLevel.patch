@@ -1,3 +1,4 @@
+~rize2knight-startingLevel
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 
@@ -43,8 +44,8 @@
         // RIze2kNight Modded
         const moddedLevel = this.scene.mods.startingLevel;
         const startingLevel = moddedLevel? moddedLevel : this.scene.gameMode.getStartingLevel();
+*
 
-#src/phases.ts
 -      const starterPokemon = this.scene.addPlayerPokemon(starter.species, this.scene.gameMode.getStartingLevel(), starter.abilityIndex, starterFormIndex, starterGender, starterProps.shiny, starterProps.variant, starterIvs, starter.nature);
       
       // RIze2kNight Modded

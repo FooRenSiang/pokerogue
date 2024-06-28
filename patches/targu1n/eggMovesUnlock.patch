@@ -1,3 +1,4 @@
+~targu1n-EggMovesUnlock
 #src/ui/starter-select-ui-handler.ts
 +                item: "candy",
 +                itemArgs: starterColors[this.lastSpecies.speciesId]

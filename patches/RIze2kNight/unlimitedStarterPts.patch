@@ -1,3 +1,4 @@
+~rize2knight-unlimitedStarterPts
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 

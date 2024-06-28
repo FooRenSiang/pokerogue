@@ -1,3 +1,4 @@
+~targu1n-IncreaseEggRarity
 #src/data/egg.ts
 -    this._tier = eggOptions.tier ?? (Overrides.EGG_TIER_OVERRIDE ?? this.rollEggTier());
     this._tier = eggOptions.tier ?? (Overrides.EGG_TIER_OVERRIDE ?? this.rollEggTier(eggOptions.scene.mods.overrideEggRarityIndex));

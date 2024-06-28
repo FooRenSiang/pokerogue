@@ -16,6 +16,8 @@ import { getNatureName } from "./data/nature";
 import * as Utils from "./utils";
 import { pokemonFormChanges } from "./data/pokemon-forms";
 import { Species } from "./enums/species";
+import { WeatherType } from "./data/weather";
+import { TerrainType } from "./data/terrain";
 
 
 export class Mods {
@@ -28,8 +30,6 @@ export class Mods {
 
   public catchTrainerPokemon: boolean = false;
   public catchTrainerPokemonRestrictions: boolean = true;
-
-  public equalEggMoves: boolean = false;
 
   public infiniteVouchers: boolean = false;
 
@@ -608,5 +608,107 @@ export class Mods {
     }
 
     return regen;
+  }
+
+  /**
+   * Random Team generator
+   */
+  generateRandomTeam(handler: StarterSelectUiHandler, scene: BattleScene, genSpecies: PokemonSpecies[][]) {
+    const maxAttempts = 200;
+
+    async function generateMon() {
+      for (let loop=0; loop < maxAttempts; loop++) {
+        const randomGenIndex = Utils.randInt(8, 0);
+        const randomCursorIndex = Utils.randInt(80, 0);
+        const species = genSpecies[randomGenIndex][randomCursorIndex];
+
+        if (!handler.tryUpdateValue(0.1)) {
+          return;
+        }
+
+        console.log("Loop:" + loop);
+        if (!species ||!handler.tryUpdateValue(scene.gameData.getSpeciesStarterValue(species.speciesId))) {
+          continue;
+        }
+        handler.setGen(randomGenIndex);
+        await handler.addToParty(randomCursorIndex);
+
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+    }
+
+    generateMon();
+  }
+
+  /**
+     * Weather UI
+     */
+  updateWeatherText(scene: BattleScene) {
+    console.log("Weather: "+  scene.arena?.weather?.weatherType);
+    if (scene.arena?.weather?.weatherType === undefined || scene.arena?.weather?.weatherType === WeatherType.NONE) {
+      scene.weatherText.setText("Clear");
+      scene.weatherText.setVisible(false);
+    } else {
+      const weatherType = scene.arena.weather?.weatherType;
+      const turnsLeft = scene.arena.weather?.turnsLeft;
+      const turnsLeftText = turnsLeft > 0 ? turnsLeft : "";
+
+      scene.weatherText.setText(`${this.getWeatherName(weatherType)} ${turnsLeftText}`);
+      scene.weatherText.setVisible(true);
+    }
+  }
+  getWeatherName(weatherType: WeatherType): String {
+    switch (weatherType) {
+    case WeatherType.NONE:
+      return "Clear";
+    case WeatherType.SUNNY:
+      return "Sun";
+    case WeatherType.RAIN:
+      return "Rain";
+    case WeatherType.SANDSTORM:
+      return "Sandstorm";
+    case WeatherType.HAIL:
+      return "Hail";
+    case WeatherType.SNOW:
+      return "Snow";
+    case WeatherType.FOG:
+      return "Fog";
+    case WeatherType.HEAVY_RAIN:
+      return "Heavy Rain";
+    case WeatherType.HARSH_SUN:
+      return "Harsh Sun";
+    case WeatherType.STRONG_WINDS:
+      return "Strong Winds";
+    }
+  }
+
+  updateTerrainText(scene: BattleScene) {
+    console.log("Terrain: "+  scene.arena?.terrain?.terrainType);
+    if (scene.arena?.terrain?.terrainType === undefined || scene.arena?.terrain?.terrainType === TerrainType.NONE) {
+      scene.terrainText.setVisible(false);
+    } else {
+      const terrainType = scene.arena?.terrain?.terrainType;
+      const turnsLeft = scene.arena?.terrain?.turnsLeft;
+      const turnsLeftText = turnsLeft > 0 ? turnsLeft : "";
+
+      scene.terrainText.setText(`${this.getTerrainName(terrainType)} ${turnsLeftText}`);
+
+      scene.updateBattleInfoOverlayPosition();
+      scene.terrainText.setVisible(true);
+    }
+  }
+  getTerrainName(terrainType: TerrainType): String {
+    switch (terrainType) {
+    case TerrainType.ELECTRIC:
+      return "Electric Terrain";
+    case TerrainType.GRASSY:
+      return "Grassy Terrain";
+    case TerrainType.MISTY:
+      return "Misty Terrain";
+    case TerrainType.PSYCHIC:
+      return "Psychic Terrain";
+    default:
+      return "No Terrain";
+    }
   }
 }

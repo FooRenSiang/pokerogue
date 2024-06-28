@@ -1,3 +1,4 @@
+~targu1n-NoRareEggMoves
 #src/data/egg.ts
 -const DEFAULT_RARE_EGGMOVE_RATE = 6;
 -const SAME_SPECIES_EGG_RARE_EGGMOVE_RATE = 3;

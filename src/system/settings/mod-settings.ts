@@ -22,7 +22,6 @@ export const SettingKeys = {
   CATCH_TRAINER_POKEMON: "CATCH_TRAINER_POKEMON", //Done
   HIDDEN_ABILITY: "HIDDEN_ABILITY", //Done
   SHINY: "SHINY", //Done
-  EQUAL_EGG_MOVES: "EQUAL_EGG_MOVES", //Done
   INFINITE_VOUCHERS: "INFINITE_VOUCHERS", //Done
   WAVE_EGG_HATCH: "WAVE_EGG_HATCH", //Done
   EGG_RARITY: "EGG_RARITY", //Done
@@ -127,13 +126,6 @@ export const ModSetting: Array<Setting> = [
         label: "No Restriction"
       }
     ],
-    default: 0,
-    type: null
-  },
-  {
-    key: SettingKeys.EQUAL_EGG_MOVES,
-    label: "Equal Egg Move Chance",
-    options: OFF_ON,
     default: 0,
     type: null
   },
@@ -294,9 +286,6 @@ export function setModSetting(scene: BattleScene, setting: string, value: number
     break;
   case SettingKeys.SHINY:
     scene.mods.shinyModifier = parseInt(ModSetting[index].options[value].value);
-    break;
-  case SettingKeys.EQUAL_EGG_MOVES:
-    scene.mods.equalEggMoves = ModSetting[index].options[value].value === "On";
     break;
   case SettingKeys.INFINITE_VOUCHERS:
     scene.mods.infiniteVouchers = ModSetting[index].options[value].value === "On";
