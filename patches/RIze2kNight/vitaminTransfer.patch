@@ -1,0 +1,126 @@
+~rize2knight-VitaminTransfer
+#src/system/settings/mod-settings.ts
++  REGEN_POKEMON: "REGEN_POKEMON", //Done
+
+  VITAMIN_TRANSFER: "VITAMIN_TRANSFER", //RIze2kNight Mod
+
+#src/system/settings/mod-settings.ts
++  {
++    key: SettingKeys.REGEN_POKEMON,
++    label: "Regen Complete Pokémon",
++    options: [
++      {
++        value: "25",
++        label: "25%"
++      },
++      {
++        value: "50",
++        label: "50%"
++      },
++      {
++        value: "75",
++        label: "75%"
++      },
++      {
++        value: "100",
++        label: "100%"
++      },
++    ],
++    default: 0,
++    type: null
++  },
+  {
+    key: SettingKeys.VITAMIN_TRANSFER,
+    label: "Vitamin Transfer",
+    options: OFF_ON,
+    default: 0,
+    type: null
+  },
+
+#src/system/settings/mod-settings.ts
++import type { Setting } from "./settings";
+import { vitaminTransfer } from "#app/modifier/modifier.js";
+*
+
++  case SettingKeys.REGEN_POKEMON:
++    scene.mods.regenPokeChance = parseInt(ModSetting[index].options[value].value);
++    break;
+  
+  //RIze2kNight Mod
+  case SettingKeys.VITAMIN_TRANSFER:
+    vitaminTransfer(ModSetting[index].options[value].value === "On");
+    break;
+
+#src/modifier/modifier.ts
++const iconOverflowIndex = 24;
+export const vitaminTransfer = (c: boolean) => {
+  return c;
+};
+*
+
+-  constructor(type: ModifierTypes.PokemonBaseStatBoosterModifierType, pokemonId: integer, stat: Stat, stackCount?: integer) {
+-    super(type, pokemonId, stackCount);
+-    this.stat = stat;
+-  }
+-
+-  matchType(modifier: Modifier): boolean {
+-    if (modifier instanceof PokemonBaseStatModifier) {
+-      return (modifier as PokemonBaseStatModifier).stat === this.stat;
+-    }
+-    return false;
+-  }
+-
+-  clone(): PersistentModifier {
+-    return new PokemonBaseStatModifier(this.type as ModifierTypes.PokemonBaseStatBoosterModifierType, this.pokemonId, this.stat, this.stackCount);
+-  }
+-
+-  getArgs(): any[] {
+-    return super.getArgs().concat(this.stat);
+-  }
+-
+-  shouldApply(args: any[]): boolean {
+-    return super.shouldApply(args) && args.length === 2 && args[1] instanceof Array;
+-  }
+-
+-  apply(args: any[]): boolean {
+-    args[1][this.stat] = Math.min(Math.floor(args[1][this.stat] * (1 + this.getStackCount() * 0.1)), 999999);
+-
+-    return true;
+-  }
+-
+-  getTransferrable(_withinParty: boolean): boolean {
+-    return false;
+-  }
+  constructor(type: ModifierTypes.PokemonBaseStatBoosterModifierType, pokemonId: integer, stat: Stat, stackCount?: integer) {
+    super(type, pokemonId, stackCount);
+    this.stat = stat;
+  }
+
+  matchType(modifier: Modifier): boolean {
+    if (modifier instanceof PokemonBaseStatModifier) {
+      return (modifier as PokemonBaseStatModifier).stat === this.stat;
+    }
+    return false;
+  }
+
+  clone(): PersistentModifier {
+    return new PokemonBaseStatModifier(this.type as ModifierTypes.PokemonBaseStatBoosterModifierType, this.pokemonId, this.stat, this.stackCount);
+  }
+
+  getArgs(): any[] {
+    return super.getArgs().concat(this.stat);
+  }
+
+  shouldApply(args: any[]): boolean {
+    return super.shouldApply(args) && args.length === 2 && args[1] instanceof Array;
+  }
+
+  apply(args: any[]): boolean {
+    args[1][this.stat] = Math.min(Math.floor(args[1][this.stat] * (1 + this.getStackCount() * 0.1)), 999999);
+
+    return true;
+  }
+
+  getTransferrable(_withinParty: boolean): boolean {
+    return vitaminTransfer? _withinParty : false;
+  }

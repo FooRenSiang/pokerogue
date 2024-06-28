@@ -1,4 +1,4 @@
-~rize2knight-maxLuck
+~rize2knight-MaxLuck
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 

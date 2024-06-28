@@ -1,4 +1,4 @@
-~rize2knight-startingLevel
+~rize2knight-StartingLevel
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 

@@ -1,4 +1,4 @@
-~rize2knight-formChangeRarity
+~rize2knight-FormChangeRarity
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 

@@ -1,4 +1,4 @@
-~rize2knight-freeReroll
+~rize2knight-FreeReroll
 #src/mods.ts
 +  public regenPokeChance: number = 0;
 
