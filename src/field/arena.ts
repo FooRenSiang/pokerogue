@@ -662,7 +662,7 @@ export class Arena {
     case Biome.LAKE:
       return 5.350;
     case Biome.SEABED:
-      return 2.629;
+      return 2.600;
     case Biome.MOUNTAIN:
       return 4.018;
     case Biome.BADLANDS:
@@ -692,7 +692,7 @@ export class Arena {
     case Biome.ABYSS:
       return 5.130;
     case Biome.SPACE:
-      return 21.347;
+      return 20.036;
     case Biome.CONSTRUCTION_SITE:
       return 1.222;
     case Biome.JUNGLE:
